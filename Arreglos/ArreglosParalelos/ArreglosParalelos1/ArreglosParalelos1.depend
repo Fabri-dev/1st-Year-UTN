@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1683650160 source:d:\facu\c\arreglos\arreglosparalelos\arreglosparalelos1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1683826552 source:g:\facu\c\arreglos\arreglosparalelos\arreglosparalelos1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
