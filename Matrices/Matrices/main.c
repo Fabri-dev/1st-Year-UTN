@@ -23,6 +23,8 @@ void mostrarMatrizStrings(char mat[][MAX_CHAR], int validos);
 int buscarString(char mat[][MAX_CHAR], int validos, char dato[]);
 void insertar(char mat[][MAX_CHAR], int validos, char dato[]);
 void ordxInsercion(char mat[][MAX_CHAR], int validos);
+int buscarPosMenor(char mat[][MAX_CHAR], int pos, int validos);
+void ordxSeleccion(char mat[][MAX_CHAR], int validos);
 
 
 int main()
@@ -51,7 +53,9 @@ int main()
 
     int validos2=cargarMatrizString(matrizchar);
     mostrarMatrizStrings(matrizchar,validos2);
-    ordxInsercion(matrizchar,validos2);
+
+    ordxSeleccion(matrizchar,validos2);
+
     mostrarMatrizStrings(matrizchar,validos2);
     return 0;
 
@@ -221,10 +225,34 @@ void ordxInsercion(char mat[][MAX_CHAR], int validos)
 
 //seleccion
 
-int buscarPosMenor(char mat[])
+int buscarPosMenor(char mat[][MAX_CHAR], int pos, int validos)
+{
+    int posMenor= 0;
+    int i=pos;
+    for (i; i< validos; i++)
+    {
+        if (strcmp(mat[i],mat[posMenor])<0)
+        {
+            posMenor=i;
+        }
+    }
+    return posMenor;
+}
 
 
+void ordxSeleccion(char mat[][MAX_CHAR], int validos)
+{
+    char aux[MAX_CHAR];
+    int posMenor=0;
+    for (int i=0; i<validos;i++)
+    {
+        posMenor= buscarPosMenor(mat,i,validos);
+        strcpy(aux,mat[posMenor]);
+        strcpy(mat[posMenor],mat[i]);
+        strcpy(mat[i], aux);
+    }
 
+}
 
 
 
