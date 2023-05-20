@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1684618939 source:g:\facu\c\arreglos\arreglosdinamicos\matrices16(elecciones)\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

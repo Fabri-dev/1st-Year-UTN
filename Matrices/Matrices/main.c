@@ -12,7 +12,7 @@ const int MAX_CHAR=30;
 
 
 void cargarMatrizUsuario(int [FILAS][COLUMNAS]);
-void mostrarMatriz(int [FILAS][COLUMNAS]);
+void mostrarMatriz(int [][COLUMNAS]);
 void matrizAleatoria(int [FILAS][COLUMNAS]);
 int sumarMatriz(int matriz[FILAS][COLUMNAS]);
 int contarMatriz(int matriz[FILAS][COLUMNAS]);
@@ -25,6 +25,17 @@ void insertar(char mat[][MAX_CHAR], int validos, char dato[]);
 void ordxInsercion(char mat[][MAX_CHAR], int validos);
 int buscarPosMenor(char mat[][MAX_CHAR], int pos, int validos);
 void ordxSeleccion(char mat[][MAX_CHAR], int validos);
+int determinanteMatriz2x2(int mat[2][2]);
+void cargarMat2x2(int mat[2][2]);
+void mostrar2x2(int mat[2][2]);
+int verificar2x2Inversa(int mat[2][2]);
+void cargarMat2x5(int mat[2][5]);
+void multiplicacionMatrices(int mat2x2[2][2], int mat2x5[2][5], int matRes[2][5]);
+void mostrarMatrices(int mat2x2[2][2], int mat2x5[2][5], int matRes[2][5]);
+int calcularInversa(int mat2x2[2][2], int inversa[2][2]);
+
+
+
 
 
 int main()
@@ -32,34 +43,19 @@ int main()
     srand(time(NULL));
     int matriz[FILAS][COLUMNAS];
     char matrizchar[MAX_FILAS][MAX_CHAR];
+    int mat2x2[2][2], inversa2x2[2][2];
+
+    int mat2x5[2][5], matProd[2][5];
+
+    cargarMat2x2(mat2x2);
+    mostrar2x2(mat2x2);
+    calcularInversa(mat2x2, inversa2x2);
+    mostrar2x2(inversa2x2);
 
 
-
-    //cargarMatrizUsuario(matriz);
-
-    matrizAleatoria(matriz);
-    mostrarMatriz(matriz);
-
-    //int sum= sumarMatriz(matriz);
-    //float prom= promedioMatriz(matriz);
-    //printf("\nLa suma de todos los elementos de la matriz es: %i \n", sum);
-    //printf("El promedio de la matriz es: %.2f \n", prom);
-
-    //int dato=0;
-    //printf("Ingrese el numero que quiere buscar: ");
-    //scanf("%i", &dato);
-
-    //buscarElemento(matriz, dato) ? printf("Num Encontrado :)") : printf("ERROR: Numero no encontrado :(");
-
-    int validos2=cargarMatrizString(matrizchar);
-    mostrarMatrizStrings(matrizchar,validos2);
-
-    ordxSeleccion(matrizchar,validos2);
-
-    mostrarMatrizStrings(matrizchar,validos2);
     return 0;
 
-    }
+}
 
 
 
@@ -67,7 +63,7 @@ int main()
 
 
 
-
+///1:
 void cargarMatrizUsuario(int matriz[FILAS][COLUMNAS])
 {
     for (int i=0; i<FILAS; i++)
@@ -80,7 +76,9 @@ void cargarMatrizUsuario(int matriz[FILAS][COLUMNAS])
     }
 }
 
-void mostrarMatriz(int matriz[FILAS][COLUMNAS])
+
+///2:
+void mostrarMatriz(int matriz[][COLUMNAS])
 {
     for (int i=0; i<FILAS; i++)
     {
@@ -95,6 +93,8 @@ void mostrarMatriz(int matriz[FILAS][COLUMNAS])
 
 }
 
+
+///3:
 void matrizAleatoria(int matriz[FILAS][COLUMNAS])
 {
     int numRand=0;
@@ -109,6 +109,8 @@ void matrizAleatoria(int matriz[FILAS][COLUMNAS])
     }
 }
 
+
+///4:
 int sumarMatriz(int matriz[FILAS][COLUMNAS])
 {
     int sum=0;
@@ -123,6 +125,8 @@ int sumarMatriz(int matriz[FILAS][COLUMNAS])
     return sum;
 }
 
+
+///5:
 int contarMatriz(int matriz[FILAS][COLUMNAS])
 {
     int cont=0;
@@ -144,6 +148,8 @@ float promedioMatriz(int matriz[FILAS][COLUMNAS])
     return promedio;
 }
 
+
+///6:
 int buscarElemento(int matriz[FILAS][COLUMNAS], int dato)
 {
     int flag=0;
@@ -160,6 +166,8 @@ int buscarElemento(int matriz[FILAS][COLUMNAS], int dato)
     return flag;
 }
 
+
+///7:
 int cargarMatrizString(char mat[][MAX_CHAR])
 {
     int i=0;
@@ -177,6 +185,8 @@ int cargarMatrizString(char mat[][MAX_CHAR])
     return i;
 }
 
+
+///8:
 void mostrarMatrizStrings(char mat[][MAX_CHAR], int validos)
 {
     for (int i=0; i < validos; i++)
@@ -185,6 +195,8 @@ void mostrarMatrizStrings(char mat[][MAX_CHAR], int validos)
     }
 }
 
+
+///9:
 int buscarString(char mat[][MAX_CHAR], int validos, char dato[])
 {
     for (int i=0; i <validos; i++)
@@ -197,9 +209,9 @@ int buscarString(char mat[][MAX_CHAR], int validos, char dato[])
     return -1;
 }
 
-/// ORDENAMIENTOS
-//insercion
 
+///10: ORDENAMIENTOS
+//insercion
 void insertar(char mat[][MAX_CHAR], int validos, char dato[])
 {
     int i= validos-1;
@@ -244,7 +256,7 @@ void ordxSeleccion(char mat[][MAX_CHAR], int validos)
 {
     char aux[MAX_CHAR];
     int posMenor=0;
-    for (int i=0; i<validos;i++)
+    for (int i=0; i<validos; i++)
     {
         posMenor= buscarPosMenor(mat,i,validos);
         strcpy(aux,mat[posMenor]);
@@ -253,6 +265,170 @@ void ordxSeleccion(char mat[][MAX_CHAR], int validos)
     }
 
 }
+
+
+///12:
+int determinanteMatriz2x2(int mat[2][2])
+{
+    int i=0, j=1;
+    int diagPrin=1, diagSec=1;
+    int det=0;
+
+    while(i<2 && j>=0)
+    {
+        diagPrin *= mat[i][i];
+        diagSec *= mat[j][i];
+        i++;
+        j--;
+    }
+
+    return det= diagPrin - diagSec;
+
+
+}
+
+void cargarMat2x2(int mat[2][2])
+{
+    for (int i=0; i<2; i++)
+    {
+        for (int j=0; j<2; j++)
+        {
+            printf("Ingrese un valor a la posicion [%i][%i] de la matriz: ", i, j);
+            scanf("%i", &mat[i][j]);
+        }
+
+    }
+
+}
+
+void mostrar2x2(int mat[2][2])
+{
+    for (int i=0; i<2; i++)
+    {
+        printf("|");
+        for (int j=0; j<2; j++)
+        {
+            printf(" %i ", mat[i][j]);
+        }
+        printf("|\n");
+
+    }
+}
+
+
+///13:
+int verificar2x2Inversa(int mat[2][2])
+{
+    if (determinanteMatriz2x2(mat) == 0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+
+///14:
+
+void cargarMat2x5(int mat[][5])
+{
+    for (int i=0; i<2; i++)
+    {
+        for(int j=0; j<5; j++)
+        {
+            printf("Ingrese un valor en la posicion[%i][%i]: ", i, j);
+            scanf("%i", &mat[i][j]);
+        }
+    }
+}
+
+void multiplicacionMatrices(int mat2x2[2][2], int mat2x5[2][5], int matRes[2][5])
+{
+    int i,j,k;
+
+    for (i=0; i < 2; i++)
+    {
+        for (j=0; j<5; j++)
+        {
+            matRes[i][j]=0;
+            for (k=0; k<2; k++)
+            {
+                matRes[i][j] += mat2x2[i][k] * mat2x5[k][j];
+            }
+        }
+    }
+}
+
+void mostrarMatrices(int mat2x2[][2], int mat2x5[][5], int matRes[][5])
+{
+    printf("MATRIZ 2X2: \n");
+    mostrar2x2(mat2x2);
+
+    printf("MATRIZ 2X5: \n");
+    for (int i=0; i<2; i++)
+    {
+        printf("|");
+        for (int j=0; j<5; j++)
+        {
+            printf(" %i ", mat2x5[i][j]);
+        }
+        printf("|\n");
+    }
+    printf("MATRIZ 2X5 RESULTANTE: \n");
+
+    for (int i=0; i<2; i++)
+    {
+        printf("|");
+        for (int j=0; j<5; j++)
+        {
+            printf(" %i ", matRes[i][j]);
+        }
+        printf("|\n");
+    }
+}
+
+/// 15:
+
+
+
+
+int calcularInversa(int mat2x2[2][2], int inversa[2][2])
+{
+    int det= determinanteMatriz2x2(mat2x2) * -1;
+
+    // MATRIZ ADJUNTA:
+    int aux= mat2x2[0][0];
+    mat2x2[0][0]=mat2x2[1][1];
+    mat2x2[0][1] *= -1;
+    mat2x2[1][0] *= -1;
+    mat2x2[1][1]= aux;
+
+    for (int i=0; i<2; i++)
+    {
+        for (int j=0; j<2; j++)
+        {
+            inversa[i][j]= mat2x2[i][j]* det;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
