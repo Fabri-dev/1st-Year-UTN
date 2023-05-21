@@ -419,10 +419,7 @@ int esSimetrica(int mat[3][3])
 {
     int i=0,j=0;
 
-    for (i=0, j=0; i<3 && j<3; i++,j++)
-    {
 
-    }
 
 }
 
