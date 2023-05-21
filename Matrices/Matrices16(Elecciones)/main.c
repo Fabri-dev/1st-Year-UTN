@@ -4,7 +4,7 @@
 
 void matCabecera(char cand[][30]);
 void mostrarTabla(char cabecera[][30], int cuerpo[][5]);
-void totalVotos(int mat[][5], int sum[], float prom[]);
+void totalVotos(int mat[][5]);
 
 
 
@@ -12,20 +12,15 @@ int main()
 {
     char candidatos[4][30];
     int cuerpo[5][5]={{1,194,48,206,45}, {2,180,20,320,16}, {3,221,90,140,20}, {4,432,51,821,14}, {5,820,61,946,18}};
-    int suma[4]={0};
-    float promedio[4]={0};
+
 
     printf("\t\t\t\t ELECCIONES PUEBLO \"LA MATRIX\" \n");
 
 
     matCabecera(candidatos);
     mostrarTabla(candidatos,cuerpo);
-    totalVotos(cuerpo, suma, promedio);
+    totalVotos(cuerpo);
 
-    for(int i=0; i<5; i++)
-    {
-        printf("suma= %i  promedio: %.2f\n",suma[i], promedio[i]);
-    }
 
     return 0;
 }
@@ -65,23 +60,47 @@ void mostrarTabla(char cabecera[][30], int cuerpo[][5])
 
 ///2.
 
-void totalVotos(int mat[][5], int sum[], float prom[])
+void totalVotos(int mat[][5])
 {
-    int suma=0;
-    float promedio=0;
+    int sum, masVotado=0;
+    float prom;
+    char ascii=65, letraMasVotada=0;
+
+
     for (int i=1; i<5; i++)
     {
-        for (int j=1; j<5; j++)
+        sum=0;
+        for (int j=0; j<5; j++)
         {
-            suma+=mat[i][j];
+            sum+= mat[j][i];
+
         }
-        sum[i]= suma;
-        prom[i]= (float)suma/5;
-        suma=0;
-        promedio=0;
+        if (masVotado < sum)
+        {
+            masVotado= sum;
+            letraMasVotada= ascii;
+        }
+
+
+        prom= (float) sum/4;
+        printf("La suma de todos los votos del candidato %c es: %i \n", ascii, sum);
+        printf("El promedio de los votos emitidos es: %.2f \n",prom); // ESTA MAL NO ENTENDI COMO SERIA EL PROMEDIO DE LOS VOTOS EMITIDOS
+        ascii++;
     }
 
+        printf("\n");
+        printf("El candidato mas votado tuvo %i y fue el candidato %c \n", masVotado, letraMasVotada);
+
 }
+
+
+
+
+
+
+
+
+
 
 
 

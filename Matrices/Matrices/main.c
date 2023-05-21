@@ -44,13 +44,17 @@ int main()
     int matriz[FILAS][COLUMNAS];
     char matrizchar[MAX_FILAS][MAX_CHAR];
     int mat2x2[2][2], inversa2x2[2][2];
-
+    int mat3x3[3][3];
     int mat2x5[2][5], matProd[2][5];
 
+    /*
     cargarMat2x2(mat2x2);
     mostrar2x2(mat2x2);
     calcularInversa(mat2x2, inversa2x2);
     mostrar2x2(inversa2x2);
+    */
+
+
 
 
     return 0;
@@ -389,8 +393,6 @@ void mostrarMatrices(int mat2x2[][2], int mat2x5[][5], int matRes[][5])
 /// 15:
 
 
-
-
 int calcularInversa(int mat2x2[2][2], int inversa[2][2])
 {
     int det= determinanteMatriz2x2(mat2x2) * -1;
@@ -411,7 +413,18 @@ int calcularInversa(int mat2x2[2][2], int inversa[2][2])
     }
 }
 
+/// 17:
 
+int esSimetrica(int mat[3][3])
+{
+    int i=0,j=0;
+
+    for (i=0, j=0; i<3 && j<3; i++,j++)
+    {
+
+    }
+
+}
 
 
 
