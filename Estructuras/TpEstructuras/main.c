@@ -163,8 +163,8 @@ int buscarPosMenor(stAlumno arr[],int pos, int validos)
 
 void ordenarxSeleccionxMatricula(stAlumno arr[], int validos)
 {
-    int auxmat=0,posMenor=0;
-    char auxgen, auxnomb[DIM];
+    int posMenor=0;
+    stAlumno aux;
 
 
     for(int i=0; i< validos;i++)
@@ -173,27 +173,11 @@ void ordenarxSeleccionxMatricula(stAlumno arr[], int validos)
 
         // ahora cambio de lugar la posicion donde esta el menor con la primera posicion
 
-        auxmat= arr[i].matricula;
+        aux= arr[i];
 
-        arr[i].matricula= arr[posMenor].matricula;
+        arr[i]= arr[posMenor];
 
-        arr[posMenor].matricula= auxmat;
-
-
-        auxgen= arr[i].genero;
-
-        arr[i].genero= arr[posMenor].genero;
-
-        arr[posMenor].genero= auxgen;
-
-
-        strcpy(auxnomb,arr[i].nombre);
-
-        strcpy(arr[i].nombre,arr[posMenor].nombre);
-
-        strcpy(arr[posMenor].nombre, auxnomb);
-
-
+        arr[posMenor]= aux;
 
     }
 
