@@ -13,15 +13,20 @@ typedef struct
 
 //// prototipados: \\\\
 
+stAlumno cargarAlumno();
 int cargarAlumnos(stAlumno arr[]);
+void mostrarAlumno(stAlumno estudiante);
 void mostrarAlumnos(stAlumno arr[], int validos);
-void mostrarNombreAlumno(stAlumno arr[], int pos);
-void mostrarGeneroAlumno(stAlumno arr[], int pos);
-void mostrarMatriculaAlumno(stAlumno arr[], int pos);
+int preguntarMatricula();
+
+
+
 int buscarMatricula(stAlumno arr[], int validos,int nroMatricula);
 void mostrarAlumnoPorMatricula(stAlumno arr[], int validos);
 int buscarPosMenor(stAlumno arr[],int pos, int validos);
 void ordenarxSeleccionxMatricula(stAlumno arr[], int validos);
+int buscarMatricula(stAlumno arr[], int validos,int nroMatricula);
+void mostrarAlumnoPorMatricula(stAlumno arr[], int validos);
 
 
 
@@ -33,82 +38,74 @@ int main()
 
     int validos= cargarAlumnos(Alumnos);
 
-    mostrarAlumnos(Alumnos, validos);
-
-    ordenarxSeleccionxMatricula(Alumnos,validos);
-
-    mostrarAlumnos(Alumnos,validos);
-
     return 0;
 }
 //1.
+
+stAlumno cargarAlumno()
+{
+    stAlumno estudiante;
+    printf("Ingrese el nombre del alumno: ");
+    scanf("%s", &estudiante.nombre);
+    printf("Ingrese el genero del alumno: ");
+    fflush(stdin);
+    scanf("%c", &estudiante.genero);
+    printf("Ingrese la matricula del alumno: ");
+    scanf("%i", &estudiante.matricula);
+
+
+    return estudiante;
+}
+
+
 int cargarAlumnos(stAlumno arr[])
 {
-    int validos=0, i=0;
-    char op='s';
+   char op='s';
+   int i=0;
 
-    while(op =='s' && i< DIM)
-    {
-       printf("Ingrese el nombre del alumno: ");
-       scanf("%s", &arr[i].nombre);
-
-       printf("Ingrese el genero del alumno: ");
-       fflush(stdin);
-       scanf("%c", &arr[i].genero);
-
-       printf("Ingrese el nro de matricula del alumno: ");
-       scanf("%i", &arr[i].matricula);
-
+   while(i < DIM && op =='s')
+   {
+       arr[i]= cargarAlumno();
        i++;
-
        printf("Desea continuar? s/n: ");
        fflush(stdin);
        scanf("%c", &op);
 
-    }
-
+   }
 
     return i;
 }
 
 //2.
-void mostrarNombreAlumno(stAlumno arr[], int pos)
+
+void mostrarAlumno(stAlumno estudiante)
 {
-
-        printf("Nombre de alumno: %s \n", arr[pos].nombre);
-
-
-}
-
-void mostrarGeneroAlumno(stAlumno arr[], int pos)
-{
-
-        printf("Genero de alumno: %c \n", arr[pos].genero);
-
-}
-
-void mostrarMatriculaAlumno(stAlumno arr[], int pos)
-{
-
-
-        printf("Matricula de alumno: %i \n", arr[pos].matricula);
-
+    printf("El nombre del alumno es: %s \n", estudiante.nombre);
+    printf("El genero del alumno es: %c \n", estudiante.genero);
+    printf("La matricula del alumno es: %i \n", estudiante.matricula);
 }
 
 void mostrarAlumnos(stAlumno arr[], int validos)
 {
-    for (int i=0; i< validos; i++)
+    for (int i=0; i < validos; i++)
     {
-        printf("\n");
-        mostrarNombreAlumno(arr,i);
-        mostrarGeneroAlumno(arr,i);
-        mostrarMatriculaAlumno(arr,i);
-        printf("\n");
+        mostrarAlumno(arr[i]);
     }
-
 }
 
+
 //3.
+
+int preguntarMatricula()
+{
+    int nroMatricula=0;
+    printf("Ingrese el numero de matricula que busca: ");
+    scanf("%i", &nroMatricula);
+    return nroMatricula;
+}
+
+
+
 int buscarMatricula(stAlumno arr[], int validos,int nroMatricula)
 {
     for (int i=0; i<validos; i++)
@@ -123,18 +120,23 @@ int buscarMatricula(stAlumno arr[], int validos,int nroMatricula)
 
 void mostrarAlumnoPorMatricula(stAlumno arr[], int validos)
 {
-    int nroMatricula=0, posicion=0;
+    int flag=0;
 
-    printf("Ingrese el numero de matricula que busca: ");
-    scanf("%i", &nroMatricula);
-    posicion=buscarMatricula(arr, validos, nroMatricula);
+    char op='s';
 
-    if(posicion!= -1)
+    while(op=='s')
+    {
+        flag= buscarMatricula(arr,validos, preguntarMatricula());
+
+        printf("Desea continuar? s/n: ");
+        fflush(stdin);
+        scanf("%c", &op);
+    }
+
+    if(flag != -1)
     {
         printf("Alumno encontrado :)\n");
-        mostrarNombreAlumno(arr, posicion);
-        mostrarGeneroAlumno(arr, posicion);
-        mostrarMatriculaAlumno(arr, posicion);
+        mostrarAlumno(arr[flag]);
     }
     else
     {
