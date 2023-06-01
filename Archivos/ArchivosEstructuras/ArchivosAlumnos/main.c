@@ -20,6 +20,8 @@ void mostrarArchivo(char archivo[]);
 void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos);
 int preguntarDato();
 int contarAlumnosXDato(char archivo[], int dato);
+void mostrarRangoEdad(char archivo[], int desde, int hasta);
+void mostrarMayorEdad(char archivo[]);
 
 
 
@@ -53,6 +55,14 @@ int main()
     //cant= contarAlumnosXDato(archivoAlumnos, datoBuscar);
     //printf("La cantidad de alumnos mayores a %i es: %i", datoBuscar, cant);
 
+    //9:
+
+    //mostrarRangoEdad(archivoAlumnos,preguntarDato(),preguntarDato());
+
+
+    //10:
+
+    //mostrarMayorEdad(archivoAlumnos);
 
     return 0;
 }
@@ -153,14 +163,17 @@ void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos)
 
             if(!feof(archi))
             {
+                if (alumno.edad >= 18)
+                {
                 apilar(pilaLegajos, alumno.legajo);
+                }
             }
         }
         fclose(archi);
     }
     else
     {
-        printf("Error: archivo corrompido");
+        printf("Error: archivo corrupto");
     }
 
 }
@@ -168,7 +181,7 @@ void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos)
 int preguntarDato()
 {
     int dato;
-    printf("Ingrese los mayores a que edad quiere buscar: ");
+    printf("Ingrese el dato: ");
     scanf("%i", &dato);
 
     return dato;
@@ -206,6 +219,62 @@ int contarAlumnosXDato(char archivo[], int dato)
 
     return i;
 }
+
+void mostrarRangoEdad(char archivo[], int desde, int hasta)
+{
+    FILE * archi;
+
+    archi= fopen(archivo,"rb");
+
+    stAlumno alumno;
+
+    if (archi != NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&alumno, sizeof(stAlumno),1, archi);
+            if(!feof(archi))
+            {
+                if (alumno.edad >= hasta && alumno.edad <= desde)
+                {
+                    mostrarAlumno(alumno);
+                }
+            }
+        }
+        fclose(archi);
+    }
+
+}
+
+void mostrarMayorEdad(char archivo[])
+{
+    FILE * archi;
+
+    stAlumno alumno, alumnoMayor;
+
+    archi= fopen(archivo, "rb");
+
+    if(archi != NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&alumno,sizeof(stAlumno),1,archi);
+            if(!feof(archi))
+            {
+                if(alumnoMayor.edad < alumno.edad)
+                {
+                    alumnoMayor= alumno;
+                }
+            }
+        }
+
+            fclose(archi);
+    }
+        mostrarAlumno(alumnoMayor);
+}
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1685573356 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\main.c
+1685580869 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
