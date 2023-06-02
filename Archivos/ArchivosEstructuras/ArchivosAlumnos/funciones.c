@@ -5,7 +5,6 @@
 #include "prototipados.h"
 
 
-
 stAlumno cargarAlumno()
 {
     stAlumno aux;
@@ -27,15 +26,24 @@ stAlumno cargarAlumno()
 
 void cargarArchivoAlumnos(char archivo[])
 {
-    char op='s';
+    char op='s', opArch;
     stAlumno alumno;
 
     FILE * archi;
 
 
-    if(archi=fopen(archivo, "ab") != NULL)
+
+    if((archi=fopen(archivo, "rb")) != NULL)
     {
-        while(op=='s')
+        printf("El archivo ya esta creado, quiere sobrescrbirlo? s/n \n");
+        fflush(stdin);
+        scanf("%c",&opArch);
+        fclose(archi);
+        if(opArch == 's')
+        {
+            archi=fopen(archivo,"wb");
+
+            while(op=='s')
         {
             alumno= cargarAlumno();
             printf("Desea seguir cargando? s/n: ");
@@ -44,12 +52,25 @@ void cargarArchivoAlumnos(char archivo[])
             fwrite(&alumno,sizeof(stAlumno),1,archi);
         }
 
-    fclose(archi);
-    }
-    else
-    {
-        archi = fopen(archivo,"wb");
         fclose(archi);
+
+
+        }
+        else
+        {
+            archi= fopen(archivo,"ab");
+
+            while(op=='s')
+        {
+            alumno= cargarAlumno();
+            printf("Desea seguir cargando? s/n: ");
+            fflush(stdin);
+            scanf("%c",&op);
+            fwrite(&alumno,sizeof(stAlumno),1,archi);
+        }
+
+        fclose(archi);
+        }
     }
 
 
@@ -57,12 +78,12 @@ void cargarArchivoAlumnos(char archivo[])
 
 void mostrarAlumno(stAlumno alumno)
 {
-    puts("------------------------------------------------------------");
+    puts("------------------------ALUMNO------------------------------");
     printf("El nombre y apellido del alumno es: %s \n", alumno.nombreYapellido);
     printf("La edad es: %i \n", alumno.edad);
     printf("El anio en el que se encuentra es: %i \n", alumno.anio);
     printf("El legajo es: %i \n",alumno.legajo);
-    puts("------------------------------------------------------------");
+    puts("------------------------------------------------------------\n");
 
 }
 
@@ -96,7 +117,7 @@ void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos)
 
     stAlumno alumno;
 
-
+    int mayorEdad=18;
 
     if (archi != NULL)
     {
@@ -106,7 +127,7 @@ void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos)
 
             if(!feof(archi))
             {
-                if (alumno.edad >= 18)
+                if (alumno.edad >= mayorEdad)
                 {
                 apilar(pilaLegajos, alumno.legajo);
                 }
@@ -124,7 +145,7 @@ void pasarAPilaLegajos(char archivo[], Pila* pilaLegajos)
 int preguntarDato()
 {
     int dato;
-    printf("Ingrese el dato: ");
+    printf("Ingrese un dato: ");
     scanf("%i", &dato);
 
     return dato;
@@ -189,7 +210,7 @@ void mostrarRangoEdad(char archivo[], int desde, int hasta)
 
 }
 
-void mostrarMayorEdad(char archivo[])
+stAlumno mostrarMayorEdad(char archivo[])
 {
     FILE * archi;
 
@@ -199,21 +220,17 @@ void mostrarMayorEdad(char archivo[])
 
     if(archi != NULL)
     {
-        while(!feof(archi))
+        while(fread(&alumno,sizeof(stAlumno),1,archi)>0)
         {
-            fread(&alumno,sizeof(stAlumno),1,archi);
-            if(!feof(archi))
-            {
                 if(alumnoMayor.edad < alumno.edad)
                 {
                     alumnoMayor= alumno;
                 }
-            }
         }
 
             fclose(archi);
     }
-        mostrarAlumno(alumnoMayor);
+        return alumnoMayor;
 }
 
 int cantAlumnosXanio(char archivo[], int dato)
@@ -310,13 +327,192 @@ int contarCantidadDeRegistros(char archivo[])
 {
     FILE* archi;
 
+    int cantRegistros=0;
+
     if((archi=fopen(archivo,"rb"))!= NULL)
         {
+            fseek(archi,sizeof(stAlumno),SEEK_END);
+            cantRegistros= ftell(archi)/sizeof(stAlumno) -1;
+
+            fclose(archi);
+        }
+
+    return cantRegistros;
+}
+
+void mostrarPorDato(char archivo[])
+{
+    FILE * archi;
+    int dato=0;
+    stAlumno b;
+
+    printf("Ingrese una posicion entre 1 y 9\n");
+    dato=preguntarDato()-1;
+    if (dato > 0 && dato < 9 )
+    {
+
+
+        if((archi=fopen(archivo,"rb")) != NULL)
+        {
+            fseek(archi,sizeof(stAlumno)*dato,SEEK_SET);
+            fread(&b,sizeof(stAlumno),1,archi);
+        }
+        mostrarAlumno(b);
+        fclose(archi);
+    }
+    else
+    {
+        printf("Error ingrese una posicion entre el 1 y 9 !!!");
+    }
+
+}
+
+void modificarArchivo(char archivo[], int dato)
+{
+    FILE * archi;
+
+    archi=fopen(archivo,"r+b");
+
+    int cantRegistro= contarCantidadDeRegistros(archivo);
+
+    stAlumno b;
+
+    if (archi != NULL)
+    {
+        if(dato >= 0 && dato < cantRegistro)
+        {
+
+            fseek(archi,sizeof(stAlumno)*dato,SEEK_SET);
+            fread(&b,sizeof(stAlumno),1,archi);
+            modificarAlumno(&b);
+            fseek(archi,sizeof(stAlumno)*-1,SEEK_CUR);
+            fwrite(&b,sizeof(stAlumno),1,archi);
 
         }
+        else
+        {
+            printf("ERROR POSICION INVALIDA");
+        }
+
+
+        fclose(archi);
+    }
+
+}
+
+void modificarAlumno(stAlumno* modificado)
+{
+    int op=0;
+
+    system("cls");
+
+
+    puts("\n------------------ALUMNO ELEGIDO------------------------");
+    mostrarAlumno(*modificado);
+
+    printf("\n\n");
+
+
+    printf("1. Modificar nombre y apellido \n");
+    printf("2. Modificar edad \n");
+    printf("3. Modificar anio \n");
+    printf("4. Modificar legajo \n");
+    printf("5. Modificar alumno entero \n");
+
+    printf("\n");
+    printf("Ingrese que quiere modificar: ");
+    scanf("%i", &op);
+
+
+    switch(op)
+    {
+    case 1:
+        printf("Ingrese el nuevo nombre:");
+        fflush(stdin);
+        gets(modificado->nombreYapellido);
+        break;
+    case 2:
+        printf("Ingrese la nueva edad: \n");
+        scanf("%i",&modificado->edad);
+        break;
+    case 3:
+        printf("Ingrese el nuevo anio: \n");
+        scanf("%i",&modificado->anio);
+        break;
+    case 4:
+        printf("Ingrese el nuevo legajo: \n");
+        scanf("%i",&modificado->legajo);
+        break;
+    case 5:
+        printf("Ingrese todos los datos nuevos del alumno: \n");
+        (*modificado) = cargarAlumno();
+        break;
+    default:
+        printf("Ingrese una opcion valida !!!");
+        break;
+
+    }
+
+    puts("---------------------ALUMNO MODIFICADO------------------------");
+    mostrarAlumno(*modificado);
+
+}
+
+void invertirElementosArchivo(char archivo[])
+{
+    FILE * archi;
+
+    archi=fopen(archivo,"r+b");
+
+    int i=0,j=contarCantidadDeRegistros(archivo)-1;
+
+
+
+    stAlumno aux1,aux2;
+
+
+
+
+    if(archi != NULL)
+    {
+        while(i <= j)
+        {
+            //Guardo las variables aux1 y aux2
+
+            fseek(archi,sizeof(stAlumno)*i,SEEK_SET);
+            fread(&aux1,sizeof(stAlumno),1,archi);
+            fseek(archi,sizeof(stAlumno)*j,SEEK_SET);
+            fread(&aux2,sizeof(stAlumno),1,archi);
+
+            // las sobreescribo
+            fwrite(&aux1,sizeof(stAlumno),1,archi);
+            fseek(archi,sizeof(stAlumno)*i,SEEK_SET);
+            fwrite(&aux2,sizeof(stAlumno),1,archi);
+
+            // aumento y disminuyo los respectivos contadores
+
+            i++;
+            j--;
+
+
+
+        }
+        fclose(archi);
+    }
+    else
+    {
+        printf("Error con archivo");
+    }
+
+
+
+
+
 
 
 
 }
+
+
 
 
