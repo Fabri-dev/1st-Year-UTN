@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1685734307 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\main.c
+1685747371 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -13,14 +13,14 @@
 	<stdio.h>
 	<malloc.h>
 
-1685744360 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\funciones.c
+1685751638 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"pila.h"
 	"prototipados.h"
 
-1685731570 g:\facu\c\archivos\archivosestructuras\archivosalumnos\prototipados.h
+1685747291 g:\facu\c\archivos\archivosestructuras\archivosalumnos\prototipados.h
 	<stdio.h>
 	<malloc.h>
 

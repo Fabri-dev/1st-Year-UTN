@@ -11,6 +11,7 @@ int main()
     //Archivos:
     char archivoAlumnos[]= "Alumnos";
     char archivoConArreglo[]= "AlumnosConArreglo";
+    char archivoPrimitivo[]="ArchivoPrimitivo";
 
     //variables:
     stAlumno arregloAlumnos[MAX_DIM], arrAnio[MAX_DIM], alumnoMayor;
@@ -52,10 +53,14 @@ int main()
         switch(opsw)
         {
         case 1:
+            cargarArchivoPrim(archivoPrimitivo);
             break;
         case 2:
+            mostrarArchivoPrim(archivoPrimitivo);
             break;
         case 3:
+            cant= contarRegistrosPrim(archivoPrimitivo);
+            printf("La cantidad de registros que hay en el archivo es: %i", cant-1);
             break;
         case 4:
             cargarArchivoAlumnos(archivoAlumnos);

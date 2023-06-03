@@ -12,6 +12,17 @@ typedef struct {
 
 } stAlumno;
 
+//1:
+void cargarArchivoPrim(char archivo[]);
+
+//2:
+void mostrarArchivoPrim(char archivo[]);
+
+//3:
+int contarRegistrosPrim(char archivo[]);
+
+
+
 //4:
 stAlumno cargarAlumno();
 void cargarArchivoAlumnos(char archivo[]);

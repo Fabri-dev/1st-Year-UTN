@@ -81,6 +81,19 @@ void mostrarArchivo(char archivo[])
 
 }
 
+int contarRegistros(char archivo[])
+{
+    FILE * archi;
+
+    int cantidad;
+
+    if ((archi=fopen(archivo,"rb") != NULL))
+    {
+        fseek(archi,sizeof(int),SEEK_END);
+        cantidad= ftell(archi)/ sizeof(int);
+    }
+    return cantidad;
+}
 
 
 
