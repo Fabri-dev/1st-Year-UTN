@@ -22,22 +22,16 @@ int main()
 
 void BuscarCaracter(char arr[],int dimension, char letra)
 {
-    int busqueda= 0, cont = 0;
-    for (int i=0; i<dimension; i++)
+    int i=0;
+    while(i<dimension)
     {
-        printf("%c \n", arr[i]);
-        if (letra==arr[i])
+        if(arr[i] == letra)
         {
-            busqueda= 1;
-            cont = i;
-            break;
+            return 1;
         }
+        i++;
     }
 
-    if (busqueda== 1)
-    {
-
-        printf("La letra: %c se encuentra en el arreglo en la posicion: arr[%i]\n",letra,cont+1 );
-    }
+    return 0;
 }
 

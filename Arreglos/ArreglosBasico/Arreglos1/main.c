@@ -17,20 +17,4 @@ int main()
     return 0;
 }
 
-int CargarArr_DevolverValidos(int arr[], int dimension)
-{
-    char op;
-    int i;
-    do {
-        printf("Ingrese un valor al arreglo: ");
-        fflush(stdin);
-        scanf("%i", &arr[i]);
-        i++;
-        printf("Desea continuar? s/n: ");
-        fflush(stdin);
-        scanf("%c", &op);
 
-    }while(op == 's' && i < dimension);
-
-    return i;
-}
