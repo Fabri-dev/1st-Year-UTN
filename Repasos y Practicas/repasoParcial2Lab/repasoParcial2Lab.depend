@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1686430533 source:g:\facu\c\repasos y practicas\repaso1er_parcial\repasoparcial2lab\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686436416 g:\facu\c\repasos y practicas\repaso1er_parcial\repasoparcial2lab\funciones.h
+
+1686436416 source:g:\facu\c\repasos y practicas\repaso1er_parcial\repasoparcial2lab\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686436699 source:g:\facu\c\repasos y practicas\repasoparcial2lab\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686436416 g:\facu\c\repasos y practicas\repasoparcial2lab\funciones.h
+
+1686430533 source:g:\facu\c\repasos y practicas\repasoparcial2lab\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
