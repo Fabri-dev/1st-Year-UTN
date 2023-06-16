@@ -21,12 +21,30 @@ typedef struct
 
 
 
+
+
+
+
+
+void menu(char archivo[]);
+stPelicula crearPelicula(int * IDpeli);
+void eliminarPelicula(stPelicula *pelicula);
+void cargarPeliArchivo(char archivo[], int*IDpeli);
+void mostrarPelicula(stPelicula aux);
+int preguntarDato();
+void modificarPelicula(stPelicula * aux);
+
+
+
+
+
+
 int main()
 {
 
     char archivo[30]="Peliculas";
 
-
+    menu(archivo);
 
 
 
@@ -49,8 +67,11 @@ void menu(char archivo[])
 
         switch(opsw)
         {
-
         case 1:
+
+            cargarPeliArchivo(archivo,&IDpeli);
+
+
             break;
         case 2:
             break;
@@ -62,7 +83,8 @@ void menu(char archivo[])
             break;
         case 6:
             break;
-
+        default:
+            break;
 
 
         }
@@ -147,6 +169,14 @@ void cargarPeliArchivo(char archivo[], int*IDpeli)
 
             fwrite(&aux,sizeof(stPelicula),1,archi);
 
+            mostrarPelicula(aux);
+
+            printf("Quiere volver a elegir? s/n");
+            fflush(stdin);
+            scanf("%c",&op);
+            system("cls");
+
+
         }
         fclose(archi);
     }
@@ -213,7 +243,7 @@ void modificarPelicula(stPelicula * aux)
         puts("\t\t PELICULA ELEGIDA\n");
         mostrarPelicula(*aux);
 
-        puts("\n-----------QUE CAMPO QUIERE MODIFICAR?------------\n")
+        puts("\n-----------QUE CAMPO QUIERE MODIFICAR?------------\n");
 
 
         printf("1.Nombre \n");
@@ -223,7 +253,7 @@ void modificarPelicula(stPelicula * aux)
         printf("5.Anio \n");
         printf("6.Valoracion \n");
         printf("7.Clasificacion(PM) \n");
-        printf("8.Todo \n")
+        printf("8.Todo \n");
 
         printf("\n");
         opsw= preguntarDato();
@@ -302,35 +332,6 @@ void modificarPelicula(stPelicula * aux)
 
 }
 
-void preguntarModificarPelicula(char archivo[], int IDpeli)
-{
-    stPelicula aux;
-
-
-    FILE * archi;
-
-    if((archi=fopen(archivo,"rb"))!= NULL)
-    {
-        while(fread(&aux,sizeof(stPelicula),1,archi)>0)
-        {
-
-
-
-
-        }
-
-
-
-    }
-    else
-    {
-        printf("ERROR CON EL ARCHIVO");
-    }
-
-
-
-
-}
 
 
 

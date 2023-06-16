@@ -9,9 +9,16 @@ int main()
 
     Monotributista arregloMono[DIM];
     Factura arregloFac[DIM];
+    int validosMono=0, validosFact=0;
 
+    //1:
+    validosMono= cargarArregloMono(arregloMono);
 
-    cargarArregloMono(arregloMono);
+    //2:
+    validosFact= cargarArregloFacturas(arregloFac,arregloMono,validosMono);
+
+    //3:
+
 
     return 0;
 }

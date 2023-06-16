@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1686444412 source:g:\facu\c\repasos y practicas\segundorepasoparalab2\main.c
+1686510811 source:g:\facu\c\repasos y practicas\segundorepasoparalab2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -7,7 +7,7 @@
 
 1686444412 g:\facu\c\repasos y practicas\segundorepasoparalab2\funciones.h
 
-1686444526 source:g:\facu\c\repasos y practicas\segundorepasoparalab2\funciones.c
+1686510769 source:g:\facu\c\repasos y practicas\segundorepasoparalab2\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

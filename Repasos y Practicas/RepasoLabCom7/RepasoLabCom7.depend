@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1686606392 source:g:\facu\c\repasos y practicas\repasolabcom7\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686606437 g:\facu\c\repasos y practicas\repasolabcom7\funciones.h
+
+1686606437 source:g:\facu\c\repasos y practicas\repasolabcom7\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
