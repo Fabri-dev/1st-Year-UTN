@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "astronauta.h"
 #include "nave.h"
 #include "menu.h"
+#include "misiones.h"
 #define DIM_MAX_ARCHI 15
 #define DIM_MAX_STR 20
 
@@ -232,7 +234,7 @@ stAstronauta crearUnAstro(char astronauta[])
         fflush(stdin);
         gets(aux.nombre);
     }
-    while(validarString(aux.nombre)==0);
+    while(validarString(aux.nombre)==0 || validarDigitosEnStrings(aux.nombre)== 1);
 
     do
     {
@@ -240,7 +242,7 @@ stAstronauta crearUnAstro(char astronauta[])
         fflush(stdin);
         gets(aux.apellido);
     }
-    while(validarString(aux.apellido)==0);
+    while(validarString(aux.apellido)==0|| validarDigitosEnStrings(aux.apellido)== 1);
 
     do
     {
@@ -248,7 +250,7 @@ stAstronauta crearUnAstro(char astronauta[])
         fflush(stdin);
         gets(aux.apodo);
     }
-    while(validarString(aux.apodo)==0);
+    while(validarString(aux.apodo)==0|| validarDigitosEnStrings(aux.nombre)== 1);
 
     do
     {
@@ -374,7 +376,7 @@ void mostrarEspecialidad()
 int validarEstado(int datoEstado)
 {
     int flag = 0;
-    if(datoEstado == 1)
+    if(datoEstado == 1 || datoEstado ==0)
     {
         flag = 1;
     }
@@ -395,8 +397,36 @@ int encontrarUltimaID(char astronauta[])
         ultimaID = astroAux.id;
         fclose(aux);
     }
+    else
+    {
+        puts("error con el archivo");
+    }
     return ultimaID;
 }
+
+int validarDigitosEnStrings(char auxNombre[])
+{
+
+    int i = 0;
+    int esUnNum;
+
+    while(i<strlen(auxNombre))
+    {
+        esUnNum = isalpha(auxNombre[i]);
+        if(esUnNum !=0)
+        {
+            i++;
+        }
+        else
+        {
+            puts("Error, hay datos numericos en el nombre...");
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 ///CARGA DEL ARCHIVO
 
 void cargarUnAstroToArchivo(char archivoAstronautas[])
@@ -440,7 +470,7 @@ void mostrarAstronautas(char archivoAstronautas[])
 void mostrarUnAstronauta(stAstronauta aux)
 {
 
-    puts("\n--------------------------------------------------------------------------\n");
+    puts("\n--------------------------------------------------------------------------");
     printf("ID............................: |%i| \n",aux.id);
     printf("Nombre........................: |%s| \n",aux.nombre);
     printf("Apellido......................: |%s| \n",aux.apellido);
@@ -452,7 +482,8 @@ void mostrarUnAstronauta(stAstronauta aux)
     printf("Misiones espaciales realizadas: |%i| \n",aux.cantMisionesRealizadas);
     printf("Horas en la EEI...............: |%i| \n",aux.horasEnEEI);
     printf("Estado........................: |%i| \n",aux.estado);
-    puts("\n");
+    puts("--------------------------------------------------------------------------\n");
+
 
 }
 
@@ -484,6 +515,7 @@ int validarIDastro(int dato,char archivoAstro[])
     {
         printf("Error con el archivo");
     }
+    return -1;
 }
 
 
@@ -501,13 +533,13 @@ void cargarAstroModificado(char archivoAstronauta[])
     if(archi != NULL)
     {
 
-        limpiarPantalla();
-        mostrarAstronautas(archivoAstronauta);
-
-        puts("----------------------INGRESE LA ID DEL ASTRONAUTA A MODIFICAR----------------------");
-
         do
         {
+
+            limpiarPantalla();
+            mostrarAstronautas(archivoAstronauta);
+
+            puts("----------------------INGRESE LA ID DEL ASTRONAUTA A MODIFICAR----------------------");
             datoID = preguntarDato();
 
         }
@@ -532,7 +564,7 @@ void cargarAstroModificado(char archivoAstronauta[])
 
 }
 
-int contarRegistros(char archivo[])
+int contarRegistrosAstro(char archivo[])
 {
     int cant=0;
     FILE*archi=fopen(archivo,"rb");
@@ -600,21 +632,19 @@ void modificarUnAstro(stAstronauta* astro)
     char continuar = 's';
     int opsw = 0;
     limpiarPantalla();
-
-    puts("-----------ASTRONAUTA ELEGIDO-------\n");
-    mostrarUnAstronauta(*astro);
     do
     {
-        printf("Que desea cambiar\n");
-        printf("1-Modificar Nombre\n");
-        printf("2-Modificar apellido\n");
-        printf("3-Modificar apodo\n");
-        printf("4-Modificar edad\n");
-        printf("5-Modificar estado\n");
-        // Modificar todo el astronauta
-        printf("6-No realizar ninguna modificacion\n");
+        puts("-----------ASTRONAUTA ELEGIDO-------");
+        mostrarUnAstronauta(*astro);
 
-        puts("Elija una opcion: ");
+        puts("1-Modificar Nombre");
+        puts("2-Modificar apellido");
+        puts("3-Modificar apodo");
+        puts("4-Modificar edad");
+        puts("5-Modificar estado");
+        puts("6-No realizar ninguna modificacion");
+
+        printf("Que desea cambiar?: ");
         scanf("%i",&opsw);
 
         switch(opsw)
@@ -626,7 +656,7 @@ void modificarUnAstro(stAstronauta* astro)
                 fflush(stdin);
                 gets(astro->nombre);
             }
-            while(validarString(astro->nombre)==0);
+            while(validarString(astro->nombre)==0|| validarDigitosEnStrings(astro->nombre)== 1);
             break;
         case 2:
             do
@@ -635,7 +665,7 @@ void modificarUnAstro(stAstronauta* astro)
                 fflush(stdin);
                 gets(astro->apellido);
             }
-            while(validarString(astro->apellido)==0);
+            while(validarString(astro->apellido)==0|| validarDigitosEnStrings(astro->apellido)== 1);
             break;
         case 3:
             do
@@ -644,7 +674,7 @@ void modificarUnAstro(stAstronauta* astro)
                 fflush(stdin);
                 gets(astro->apodo);
             }
-            while(validarString(astro->apodo)==0);
+            while(validarString(astro->apodo)==0|| validarDigitosEnStrings(astro->apodo)== 1);
             break;
         case 4:
             do
@@ -665,14 +695,14 @@ void modificarUnAstro(stAstronauta* astro)
             while(validarEstado(astro->estado)==0);
             break;
         case 6:
-            opsw == -1;
+            puts("\nNo se realizo ningun cambio \n");
             break;
         default:
             printf("Opcion no valida, reintente...\n");
             break;
         }
 
-        printf("(S/N)para realizar otra modificacion: \n");
+        printf("Quiere realizar otra modificacion al astronauta elegido?: (S/N)\n");
         fflush(stdin);
         scanf("%c",&continuar);
 
@@ -726,26 +756,24 @@ int archivoToArregloAstro(stAstronauta arrAstro[], char archivoAstro[])
     return validos;
 }
 
-int * crearArregloDinamicoAstro(stAstronauta * arrAstro, int tam)
+stAstronauta * crearArregloDinamicoAstro(int tam)
 {
-    arrAstro= malloc(sizeof(stAstronauta)*tam);
+
+    stAstronauta* arrAstro= malloc(sizeof(stAstronauta)*tam);
     return arrAstro;
 }
 
 
-void elegirLaConsulta(char archivoAstro[])
+void ConsultaAstro(char archivoAstro[])
 {
-    stAstronauta * arrAstro;
-    int tam=contarRegistros(archivoAstro);
-    arrAstro= crearArregloDinamicoAstro(arrAstro,tam);
+    stAstronauta *arrAstro;
+    int tam=contarRegistrosAstro(archivoAstro);
 
-    int validosAstro=tam;
+    arrAstro= crearArregloDinamicoAstro(tam);
+
+    int validosAstro= archivoToArregloAstro(arrAstro,archivoAstro);
 
 
-
-    validosAstro= archivoToArregloAstro(arrAstro,archivoAstro);
-
-    mostrarArregloAstro(arrAstro,validosAstro);
 
 
     menuConsultarPorAstronauta(arrAstro,validosAstro);
@@ -764,6 +792,8 @@ void opcionesParaConsultarAstronauta()
     printf("8-Buscar astronauta con la mayor cantidad de misiones realizadas: \n");
     printf("9-Buscar astronauta con menor horas de vuelo: \n");
     printf("10-Buscar astronauta con menor cantidad de misiones realizadas: \n");
+    //preguntar cuantos astronautas hay en total
+
 }
 
 void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
@@ -778,6 +808,7 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
 
     do
     {
+        mostrarArregloAstro(arregloAstro,validos);
         opcionesParaConsultarAstronauta();
         puts("Elija una opcion: ");
         scanf("%i",&op);
@@ -786,7 +817,7 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
         switch(op)
         {
         case 1:
-            puts("------------------------------INGRESE EL ID A BUSCAR----------------------------\n");
+            puts("-------------Ingrese el ID del astronauta que quiere buscar-------------");
             dato = preguntarDato();
             dato= buscarIDastro(arregloAstro,dato,validos);
             if (dato != -1)
@@ -807,7 +838,7 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
                 fflush(stdin);
                 gets(datoString);
             }
-            while(validarString(datoString)==0);
+            while(validarString(datoString)==0|| validarDigitosEnStrings(datoString)== 1);
             buscarNombreAstro(arregloAstro,datoString,validos) ?printf("Existen estos astronautas con el nombre: %s \n",datoString) : printf("No existen astronautas con ese nombre \n");
 
             break;
@@ -821,7 +852,7 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
                 gets(datoString);
 
             }
-            while(validarString(datoString)==0);
+            while(validarString(datoString)==0|| validarDigitosEnStrings(datoString)== 1);
             buscarApellidoAstro(arregloAstro,datoString,validos) ? printf("Existen estos astronautas con el apellido: %s \n",datoString) : printf("No existen astronautas con ese apellido \n");
 
 
@@ -833,7 +864,7 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
                 fflush(stdin);
                 gets(datoString);
             }
-            while(validarString(datoString)==0);
+            while(validarString(datoString)==0|| validarDigitosEnStrings(datoString)== 1);
             buscarApodoAstro(arregloAstro,datoString,validos) ?printf("Existen estos astronautas con el apodo: %s \n",datoString) : printf("No existen astronautas con ese apodo \n");
 
             break;
@@ -1015,7 +1046,6 @@ int buscarAstronautasPorEstado(stAstronauta arregloAstro[],int estadoAstro,int v
 
 stAstronauta buscarAstroConMayorExpHorasVuelo(stAstronauta arregloAstro[],int validos)
 {
-    int i = 0;
     stAstronauta aux;
 
     aux.horasDeVuelo=-1;
@@ -1032,12 +1062,12 @@ stAstronauta buscarAstroConMayorExpHorasVuelo(stAstronauta arregloAstro[],int va
 
 stAstronauta buscarAstroConMayorExpEnMisiones(stAstronauta arregloAstro[],int validos)
 {
-    int i = 0;
+
     stAstronauta aux;
 
     aux.cantMisionesRealizadas=-1;
 
-     for (int i=0; i < validos; i++)
+    for (int i=0; i < validos; i++)
     {
         if(arregloAstro[i].cantMisionesRealizadas > aux.cantMisionesRealizadas)
         {

@@ -7,11 +7,17 @@
 void menuPrincipal(char archivoAstronautas[],char archivoNaves[],char archivoMisiones[]);
 int validarOpcionMenu(int dato);
 void pantallaDeCarga();
+void logoUTN();
+
+//menu astro
 void menuAstronauta(char archivoAstronauta[]);
 void opcionMostrarAstronautas(char archivoAstro[]);
 void dibujoAstronauta();
 
-
+//menu nave
+void dibujoNaves();
+void opcionMostrarNaves(char archivoNaves[]);
+void menuNaves(char archivoNaves[]);
 
 
 #endif // MENU_H_INCLUDED

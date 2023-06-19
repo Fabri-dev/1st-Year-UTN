@@ -13,11 +13,11 @@ int main()
     char archivoNaves[DIM_MAX_ARCHI]="naves";
     char archivoMisiones[DIM_MAX_ARCHI]="misiones";
     menuPrincipal(archivoAstronautas,archivoNaves,archivoMisiones);
-    //elegirLaConsulta(archivoAstronautas);
-    //cargarAstroModificado(archivoAstronautas);
 
-    stNaves arrNave[DIM_MAX_ARCHI];
-    //cargarArregloNave(arrNave, archivoNaves);
+    //cargarArchivoNaves(archivoNaves);
+    //mostrarTodasLasNaves(archivoNaves);
+    //ConsultaNave(archivoNaves);
+
 
     return 0;
 }

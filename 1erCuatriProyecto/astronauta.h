@@ -28,8 +28,8 @@ int estado; //(1- Activo 2- Retirado)
 
 void limpiarPantalla();
 int preguntarDato();
-int contarRegistros(char archivo[]);
-int * crearArregloDinamicoAstro(stAstronauta * arrAstro, int tam);
+int contarRegistrosAstro(char archivo[]);
+stAstronauta * crearArregloDinamicoAstro( int tam);
 
 
 
@@ -45,6 +45,7 @@ int validarEstado(int datoEstado);
 void mostrarEspecialidad();
 int encontrarUltimaID(char astronauta[]);///autoincrementar ID
 
+int validarDigitosEnStrings(char auxNombre[]);
 
 // archivos
 void cargarUnAstroToArchivo(char archivoAstronautas[]);
@@ -67,10 +68,7 @@ int archivoToArregloAstro(stAstronauta arrAstro[], char archivoAstro[]);
 
 void mostrarArregloAstro(stAstronauta arrAstro[],int validos);
 
-
-
-
-void elegirLaConsulta(char archivoAstro[]);
+void ConsultaAstro(char archivoAstro[]);
 void opcionesParaConsultarAstronauta();
 void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos);
 int buscarIDastro(stAstronauta astro[],int idBuscado,int validos);

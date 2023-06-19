@@ -12,23 +12,60 @@ int estado; // (0- mantenimiento 1- Lista para su uso 2- Actualmente en misión 3
 }stNaves;
 
 // validar
-void validarTipoNave(char archivoNaves[]);
+void validarTipoNave(char tipoNave[]);
+int validarCantNave(int cont);
+int validarSiNaveEstaOcupada(int estado);
+int validarIDNave(char archivoNave[], int dato);
+int validarEstadoNave(int dato);
+
+int contarNaveXtipo(char archivoNaves[], char tipoNave[]);
+
+
 
 // Cargar nave
 stNaves cargarUnaNave(char archivoNaves[]);
 int encontrarUltimaIDNave(char archivoNaves[]);
 void tiposDeNave();
 
-// arreglo
-int cargarArregloNave(stNaves arrNave[], char archivoNaves[]);
-
-
-
 // archivos
+void cargarArchivoNaves(char archivoNaves[]);
+int contarRegistrosNaveParaElArregloDinamico(char archivoNaves[]);      ///esta funcion me devuelve el tamaño exacto para el arreglo dinamico
 
-// modificar ?
+
+// mostrar
+void mostrarUnaNave(stNaves aux);
+void mostrarTodasLasNaves(char archivoNaves[]);
+
+
+// modificar
+int validarIDNave(char archivoNave[], int dato);
+int encontrarPosicionNaveXID(char archivoNaves[], int IDNave);
+void cargarNaveModificada(char archivoNaves[]);
+void modificarUnaNave(stNaves * aux);
+
+
+
+// arreglo
+int archivoToArregloNaves(char archivoNaves[],stNaves arrNaves[]);
+stNaves* crearArregloDinamicoNave(int tam);
+void mostrarArregloNave(stNaves arrNaves[], int validos);
 
 // consulta
+
+void ConsultaNave(char archivoNaves[]);
+void opcionesParaConsultarNaves();
+void menuConsultarPorNave(char archivoNaves[],stNaves arrNaves[], int validos);
+int buscarNaveXID(stNaves arr[],int validos, int datoID);
+int contarRegistrosNave(char archivoNaves[]);                           ///tuve que crear esta funcion de contar registros ya que esta tengo que dividir la cantidad de registro por el tamaño de la estructura
+int cantNavesXTipos(stNaves arr[], int validos, char tipo[]);
+
+
+
+int navesConMayorHoraDeVuelo(stNaves arregloNave[],int validos);        ///devuelve la posicion donde se encuentra la nave con mayor horas de vuelo
+int navesConMenorHoraDeVuelo(stNaves arregloNave[],int validos);        ///devuelve la posicion donde se encuentra la nave con menor horas de vuelo
+int naveConMayorVuelosRealizados(stNaves arregloNave[],int validos);    ///devuelve la posicion donde se encuentra la nave con mayor cantidad de vuelos realizados
+int naveConMenorVuelosRealizados(stNaves arregloNave[],int validos);    ///devuelve la posicion donde se encuentra la nave con menor cantidad de vuelos realizados
+int mostrarNavesXEstado(char archivoNaves[], int estado);               ///Cambie la ubi de esta funcion ya que no se utilizaba antes y me sirve para la consulta
 
 #endif // NAVES_H_INCLUDED
 
