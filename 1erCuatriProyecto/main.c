@@ -2,22 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include "astronauta.h"
-#include "naves.h"
+#include "nave.h"
 #include "menu.h"
-#define DIM_MAX_ARCHI 15
-#define DIM_MAX_STR 20
+#include "misiones.h"
+#include "windows.h"
+#define DIM_MAX_ARCHI 30
+#define DIM_MAX_STR 40
+#define DIM_MAX_TXT 256
+
 
 int main()
 {
+    srand(time(NULL));
+
     char archivoAstronautas[DIM_MAX_ARCHI] = "astronautas";
     char archivoNaves[DIM_MAX_ARCHI]="naves";
     char archivoMisiones[DIM_MAX_ARCHI]="misiones";
+
+
     menuPrincipal(archivoAstronautas,archivoNaves,archivoMisiones);
 
-    //cargarArchivoNaves(archivoNaves);
-    //mostrarTodasLasNaves(archivoNaves);
-    //ConsultaNave(archivoNaves);
-
+    //hola profe
 
     return 0;
 }

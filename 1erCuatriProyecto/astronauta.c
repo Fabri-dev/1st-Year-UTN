@@ -6,11 +6,12 @@
 #include "nave.h"
 #include "menu.h"
 #include "misiones.h"
-#define DIM_MAX_ARCHI 15
-#define DIM_MAX_STR 20
+#define DIM_MAX_ARCHI 30
+#define DIM_MAX_STR 40
+#define DIM_MAX_TXT 256
 
-
-const char* paises[] =
+///varios
+const char* paises[DIM_MAX_TXT] =
 {
     "Afganistan",
     "Albania",
@@ -26,7 +27,7 @@ const char* paises[] =
     "Austria",
     "Azerbaiyan",
     "Bahamas",
-    "Banglades",
+    "Bangladesh",
     "Barbados",
     "Barein",
     "Belgica",
@@ -70,7 +71,7 @@ const char* paises[] =
     "Eritrea",
     "Eslovaquia",
     "Eslovenia",
-    "España",
+    "Espana",
     "Estados Unidos",
     "Estonia",
     "Eswatini",
@@ -87,7 +88,7 @@ const char* paises[] =
     "Grecia",
     "Guatemala",
     "Guinea",
-    "Guinea-Bisau",
+    "Guinea Bisau",
     "Guinea Ecuatorial",
     "Guyana",
     "Haiti",
@@ -219,8 +220,8 @@ stAstronauta crearUnAstro(char astronauta[])
     //para no tener que cambiar la id el usuario incia el programa ya con UN astronauta predeterminado
 
     ///datos por defecto para crear un astro
-    int ultimaID = encontrarUltimaID(astronauta) + 1;
-    aux.id =ultimaID; // arranca en 10 , de 10 para abajo son los predeterminados y luego de 10 para arriba los del usuario
+    int ultimaID = encontrarUltimaID(astronauta);
+    aux.id = ultimaID+1; // arranca en 50
     aux.horasDeVuelo = 0;
     aux.cantMisionesRealizadas = 0;
     aux.horasEnEEI = 0;
@@ -250,7 +251,7 @@ stAstronauta crearUnAstro(char astronauta[])
         fflush(stdin);
         gets(aux.apodo);
     }
-    while(validarString(aux.apodo)==0|| validarDigitosEnStrings(aux.nombre)== 1);
+    while(validarString(aux.apodo)==0|| validarDigitosEnStrings(aux.apodo)== 1);
 
     do
     {
@@ -258,12 +259,13 @@ stAstronauta crearUnAstro(char astronauta[])
         fflush(stdin);
         scanf("%i",&aux.edad);
     }
-    while(validarEdad(aux.edad)==0);
+    while(validarEdad(aux.edad)==0 && validarCaracteresEnEnteroMision(aux.edad)==0);
+
     do
     {
         printf("Ingrese el pais el astronauta: \n");
         fflush(stdin);
-        scanf("%s",&aux.nacionalidad);
+        gets(aux.nacionalidad);
     }
     while(validarNacionalidad(aux.nacionalidad)==0);
 
@@ -273,7 +275,7 @@ stAstronauta crearUnAstro(char astronauta[])
 
     return aux;
 }
-
+///validaciones
 int validarString(char auxNombre[])
 {
     if (strlen(auxNombre) > 20 || strlen(auxNombre) < 3)
@@ -326,12 +328,14 @@ void validarEspecialidad(char especialidad[])
     int flag = 0;
     int op = 0;
 
+        limpiarPantalla();
     do
     {
+
         puts("------------------INGRESE UNA OPCION--------------------\n");
         mostrarEspecialidad();
         scanf("%i",&op);
-        limpiarPantalla();
+
         switch(op)
         {
         case 1:
@@ -357,10 +361,12 @@ void validarEspecialidad(char especialidad[])
         default:
             limpiarPantalla();
             printf("OPCION INCORRECTA...Reintente\n");
+            flag = 0;
             break;
         }
-    }
-    while(flag == 0);
+
+    }while(flag == 0);
+
 
 }
 void mostrarEspecialidad()
@@ -376,9 +382,13 @@ void mostrarEspecialidad()
 int validarEstado(int datoEstado)
 {
     int flag = 0;
-    if(datoEstado == 1 || datoEstado ==0)
+    if(datoEstado == 1 || datoEstado ==2)
     {
         flag = 1;
+    }
+    if(flag == 0)
+    {
+        puts("Por favor ingrese un estado valido..");
     }
     return flag;
 }
@@ -427,6 +437,31 @@ int validarDigitosEnStrings(char auxNombre[])
 }
 
 
+int validarCaracteresEnEnteroMision(int dato)
+{
+    int flag = 0;
+    int i = 0;
+    char esUnNum[DIM_MAX_STR];
+    sprintf(esUnNum,"%d",dato);
+    while(i<strlen(esUnNum))
+    {
+        esUnNum[i] = isdigit(esUnNum[i]);
+        if(esUnNum == 0)
+        {
+
+            flag = 1;
+        }
+
+
+        i++;
+    }
+           if(flag == 1){
+            puts("Error, hay caracteres en el nombre...");
+           }
+    return flag;
+}
+
+
 ///CARGA DEL ARCHIVO
 
 void cargarUnAstroToArchivo(char archivoAstronautas[])
@@ -447,6 +482,7 @@ void cargarUnAstroToArchivo(char archivoAstronautas[])
     }
 }
 
+///MOSTRAR
 void mostrarAstronautas(char archivoAstronautas[])
 {
 
@@ -492,6 +528,7 @@ void mostrarUnAstronauta(stAstronauta aux)
 int validarIDastro(int dato,char archivoAstro[])
 {
     stAstronauta aux;
+    int flag =0;
     FILE * archi=fopen(archivoAstro,"rb");
 
     if(archi != NULL)
@@ -500,13 +537,13 @@ int validarIDastro(int dato,char archivoAstro[])
         {
             if (dato == aux.id)
             {
-                return 1;
+                flag=1;
             }
         }
 
 
         printf("Ingrese un ID de astronauta valido");
-        return 0;
+
 
 
         fclose(archi);
@@ -515,7 +552,8 @@ int validarIDastro(int dato,char archivoAstro[])
     {
         printf("Error con el archivo");
     }
-    return -1;
+
+    return flag;
 }
 
 
@@ -525,12 +563,12 @@ void cargarAstroModificado(char archivoAstronauta[])
     stAstronauta astro;
 
 
-    FILE* archi= fopen(archivoAstronauta,"r+b");
+    FILE* buffer= fopen(archivoAstronauta,"r+b");
 
     int datoID = 0;
     int posAstro = 0;
 
-    if(archi != NULL)
+    if(buffer != NULL)
     {
 
         do
@@ -545,17 +583,17 @@ void cargarAstroModificado(char archivoAstronauta[])
         }
         while(validarIDastro(datoID,archivoAstronauta)== 0);
 
-        posAstro = encontrarPosicionAstroXID(archivoAstronauta,datoID)-1;   // devuelvo la posicion en la que esta el astronauta con el ID buscado
+        posAstro = encontrarPosicionAstroXID(archivoAstronauta,datoID)-1;     // devuelvo la posicion en la que esta el astronauta con el ID buscado
 
-        fseek(archi,sizeof(stAstronauta)*posAstro,SEEK_SET);            // muevo el indicador de posicion a donde se encuentra el astronauta con el ID buscado y le resto 1 para leerlo
-        fread(&astro,sizeof(stAstronauta),1,archi);                    // lo leo, se que me va a leer el astronauta que quiero ya que me movi una posicion atras
+        fseek(buffer,sizeof(stAstronauta)*posAstro,SEEK_SET);              // muevo el indicador de posicion a donde se encuentra el astronauta con el ID buscado y le resto 1 para leerlo
+        fread(&astro,sizeof(stAstronauta),1,buffer);                      // lo leo, se que me va a leer el astronauta que quiero ya que me movi una posicion atras
 
-        // le paso la direccion de memoria del astronauta que acabo de leer y el indicador de pos va a aumentar por el read
+                                                                        // le paso la direccion de memoria del astronauta que acabo de leer y el indicador de pos va a aumentar por el read
         modificarUnAstro(&astro);
-        fseek(archi,sizeof(stAstronauta)*-1,SEEK_CUR);               // por culpa del read debo moverme una posicion hacia atras para poder sobreescribir el astronauta modificado
-        fwrite(&astro,sizeof(stAstronauta),1,archi);                // escribo el astronauta modificado
+        fseek(buffer,sizeof(stAstronauta)*(-1),SEEK_CUR);               // por culpa del read debo moverme una posicion hacia atras para poder sobreescribir el astronauta modificado
+        fwrite(&astro,sizeof(stAstronauta),1,buffer);                // escribo el astronauta modificado
 
-        fclose(archi);
+        fclose(buffer);
     }
     else
     {
@@ -567,13 +605,13 @@ void cargarAstroModificado(char archivoAstronauta[])
 int contarRegistrosAstro(char archivo[])
 {
     int cant=0;
-    FILE*archi=fopen(archivo,"rb");
+    FILE*buffer=fopen(archivo,"rb");
 
-    if(archi != NULL)
+    if(buffer != NULL)
     {
-        fseek(archi,sizeof(stAstronauta) -1,SEEK_END);
-        cant= ftell(archi) / sizeof(stAstronauta);
-        fclose(archi);
+        fseek(buffer,sizeof(stAstronauta) -1,SEEK_END);
+        cant= ftell(buffer) / sizeof(stAstronauta);
+        fclose(buffer);
     }
     else
     {
@@ -688,7 +726,10 @@ void modificarUnAstro(stAstronauta* astro)
         case 5:
             do
             {
-                printf("Ingrese el nuevo estado\n");
+                puts("Ingrese el nuevo estado:");
+                puts("1. Activo");
+                puts("2. Retirado");
+
                 fflush(stdin);
                 scanf("%i",&astro->estado);
             }
@@ -704,12 +745,12 @@ void modificarUnAstro(stAstronauta* astro)
 
         printf("Quiere realizar otra modificacion al astronauta elegido?: (S/N)\n");
         fflush(stdin);
-        scanf("%c",&continuar);
+        continuar = getch(continuar);
 
         limpiarPantalla();
     }
-    while(continuar == 's'||continuar == 'S');
-    puts("-----------Astronauta modificado-------\n");
+    while(continuar == 's');
+    puts("-----------Astronauta modificado-----------\n");
     mostrarUnAstronauta(*astro);
 
 
@@ -773,10 +814,7 @@ void ConsultaAstro(char archivoAstro[])
 
     int validosAstro= archivoToArregloAstro(arrAstro,archivoAstro);
 
-
-
-
-    menuConsultarPorAstronauta(arrAstro,validosAstro);
+    menuConsultarPorAstronauta(archivoAstro,arrAstro,validosAstro);
 
 }
 
@@ -792,11 +830,10 @@ void opcionesParaConsultarAstronauta()
     printf("8-Buscar astronauta con la mayor cantidad de misiones realizadas: \n");
     printf("9-Buscar astronauta con menor horas de vuelo: \n");
     printf("10-Buscar astronauta con menor cantidad de misiones realizadas: \n");
-    //preguntar cuantos astronautas hay en total
-
+    printf("11-Mostrar cantidad de astronautas en el sistema: \n");
 }
 
-void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
+void menuConsultarPorAstronauta(char archivoAstronautas[],stAstronauta arregloAstro[],int validos)
 {
 
     stAstronauta aux;
@@ -916,7 +953,12 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
             puts("--------------------ASTRONAUTA CON MENOR NUMERO DE MISIONES--------------------\n");
             mostrarUnAstronauta(aux);
             break;
-
+        case 11:
+             dato = 0;
+             dato = contarRegistrosAstro(archivoAstronautas);
+              puts("--------------------ASTRONAUTA DEL SISTEMA--------------------\n");
+              printf("La cantidad de astronautas del sistema son|%i|\n",dato);
+            break;
         default:
             printf("OPCION NO VALIDA,reintente...\n");
             break;
@@ -924,11 +966,11 @@ void menuConsultarPorAstronauta(stAstronauta arregloAstro[],int validos)
 
         printf("(S/N) para seleccionar otra opcion:\n");
         fflush(stdin);
-        scanf("%c",&continuar);
+        continuar = getch(continuar);
         limpiarPantalla();
 
     }
-    while(continuar == 'S'||continuar == 's');
+    while(continuar == 's');
 }
 
 int buscarIDastro(stAstronauta astro[],int idBuscado,int validos)
@@ -1030,6 +1072,14 @@ int buscarPaisAstro(stAstronauta arregloAstro[],char auxPais[],int validos)
 
 int buscarAstronautasPorEstado(stAstronauta arregloAstro[],int estadoAstro,int validos)
 {
+    char datoEstado[DIM_MAX_STR];
+    if(estadoAstro == 1){
+    strcpy(datoEstado,"Listo");
+    }else if(estadoAstro == 0){
+    strcpy(datoEstado,"Retirado");
+    }else if(estadoAstro == 3){
+    strcpy(datoEstado,"En mision");
+    }
 
     int flag = 0;
 
@@ -1040,6 +1090,9 @@ int buscarAstronautasPorEstado(stAstronauta arregloAstro[],int estadoAstro,int v
             mostrarUnAstronauta(arregloAstro[i]);
             flag = 1;
         }
+    }
+    if(flag == 0){
+        printf("No se encuentran astronautas en el estado %i (%s) \n\n",estadoAstro,datoEstado);
     }
     return flag;
 }
@@ -1111,4 +1164,31 @@ stAstronauta buscarAstroConMenorExpEnMisiones(stAstronauta arregloAstro[],int va
 
 }
 
+int contarAstronautasXEstado(char archivoAstro[],int estado)
+{
+    int cont=0;
+    stAstronauta aux;
+    FILE *buffer = fopen(archivoAstro,"rb");
+
+    if(buffer!= NULL)
+    {
+        while(fread(&aux,sizeof(stAstronauta),1,buffer)>0)
+        {
+            if(aux.estado == estado)
+            {
+                cont++;
+            }
+
+        }
+
+
+        fclose(buffer);
+    }
+    else
+    {
+        puts("Error con el archivo");
+    }
+
+    return cont;
+}
 

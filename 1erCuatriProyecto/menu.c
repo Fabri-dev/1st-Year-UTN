@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "astronauta.h"
-#include "naves.h"
+#include "nave.h"
 #include "menu.h"
 #include "misiones.h"
-#define DIM_MAX_ARCHI 15
-#define DIM_MAX_STR 20
+#define DIM_MAX_ARCHI 30
+#define DIM_MAX_STR 40
+#define DIM_MAX_TXT 256
+
+
 
 // VOID inicioPredeterminado(recibe todos los archivos)
 //creamos 3 (para poder utilizar al menos la nave mas mala)
@@ -44,6 +47,7 @@ void menuPrincipal(char archivoAstronautas[],char archivoNaves[],char archivoMis
             menuNaves(archivoNaves);
             break;
         case 3:
+            menuMisiones(archivoMisiones,archivoNaves,archivoAstronautas);
             break;
         default:
             puts("Opcion no valida,reintente...");
@@ -52,11 +56,12 @@ void menuPrincipal(char archivoAstronautas[],char archivoNaves[],char archivoMis
 
         puts("(S/N)Desea ingresar en otro menu: ");
         fflush(stdin);
-        op = getch(op);
+        op= getch(op);
         limpiarPantalla();
 
     }while(op == 's');
 
+    despedida();
 }
 
 void logoUTN()
@@ -117,7 +122,7 @@ void menuAstronauta(char archivoAstronauta[])
         dibujoAstronauta();
 
         printf("Que desea hacer?: ");
-        scanf("%i",&opsw);
+        opsw=preguntarDato();
 
         limpiarPantalla();
 
@@ -136,8 +141,10 @@ void menuAstronauta(char archivoAstronauta[])
             ConsultaAstro(archivoAstronauta);
             break;
         case 5:
+            return;
             break;
         default:
+            limpiarPantalla();
             printf("Por favor ingrese un dato valido \n");
             break;
         }
@@ -167,8 +174,9 @@ void opcionMostrarAstronautas(char archivoAstro[])
 
         puts("--------------------------------------------------------");
         puts("1. Mostrar todos los astronautas en la base de datos");
-        puts("2. Mostrar los astronautas disponibles (Estado= 1)");
-        puts("3. Mostrar los astronautas dados de baja (Estado= 0)");
+        puts("2. Mostrar los astronautas en mision.... (Estado= 3)");
+        puts("3. Mostrar los astronautas disponibles.. (Estado= 1)");
+        puts("4. Mostrar los astronautas dados de baja (Estado= 0)");
         puts("--------------------------------------------------------");
         opsw= preguntarDato();
         limpiarPantalla();
@@ -178,14 +186,20 @@ void opcionMostrarAstronautas(char archivoAstro[])
             mostrarAstronautas(archivoAstro);
             break;
         case 2:
-            estado = 1;
+            estado = 3;
             buscarAstronautasPorEstado(arregloAstro,estado,validosAstro);
             break;
         case 3:
+             estado = 1;
+            buscarAstronautasPorEstado(arregloAstro,estado,validosAstro);
+            break;
+            break;
+        case 4:
             estado = 0;
             buscarAstronautasPorEstado(arregloAstro,estado,validosAstro);
             break;
         default:
+            limpiarPantalla();
             printf("Por favor ingrese una opcion valida \n");
             break;
         }
@@ -203,7 +217,7 @@ void menuNaves(char archivoNaves[])
 {
     char op = 's';
     int opsw = 0;
-    int validos = 0;
+
 
     do
     {
@@ -211,8 +225,7 @@ void menuNaves(char archivoNaves[])
         dibujoNaves();
 
         printf("Que desea realizar? ");
-        fflush(stdin);
-        scanf("%i", &opsw);
+        opsw=preguntarDato();
 
         limpiarPantalla();
 
@@ -231,6 +244,7 @@ void menuNaves(char archivoNaves[])
             ConsultaNave(archivoNaves);
             break;
         case 5:
+            return;
             break;
         default:
             printf("Has ingresado mal un dato, vuelve a intentarlo!!");
@@ -245,7 +259,6 @@ void menuNaves(char archivoNaves[])
     while(op=='s');
 
 }
-
 
 void dibujoAstronauta()
 {
@@ -324,10 +337,10 @@ void opcionMostrarNaves(char archivoNaves[])
     {
         puts("--------------------------------------------------------");
         puts("1. Mostrar todas las naves en la base de datos");
-        puts("2. Mostrar las naves en mantenimiento (Estado = 0");
-        puts("3. Mostrar las naves disponibles (Estado = 1)");
-        puts("4. Mostrar las naves en mision (Estado = 2)");
-        puts("5. Mostrar las naves dadas de baja (Estado = 3");
+        puts("2. Mostrar las naves en mantenimiento (Estado = 0)");
+        puts("3. Mostrar las naves disponibles..... (Estado = 1)");
+        puts("4. Mostrar las naves en mision....... (Estado = 2)");
+        puts("5. Mostrar las naves dadas de baja... (Estado = 3)");
         puts("--------------------------------------------------------");
 
         opsw= preguntarDato();
@@ -372,11 +385,12 @@ void opcionMostrarNaves(char archivoNaves[])
             }
             break;
         default:
+            limpiarPantalla();
             puts("Error ingrese una opcion valida...");
 
             break;
         }
-        printf("\nQuiere seguir mostrando naves? s/n: ");
+        puts("\nQuiere seguir mostrando naves? s/n: ");
         fflush(stdin);
         op = getch(op);
         limpiarPantalla();
@@ -384,5 +398,416 @@ void opcionMostrarNaves(char archivoNaves[])
     }
     while(op=='s');
 
+
+}
+
+void dibujoMision(){
+    puts("----------------------------------------------------------------------------------");
+    puts(" .      .      .      .      .      .      .      .      .      .      .");
+    puts(".                               .       .       .       .       .       .");
+    puts("   .        .        .        .        .        .        .        .        .");
+    puts("     .         .         .        _......____._        .         .");
+    puts("   .          .          . ..--'"" .           ----------...          .");
+    puts("                   _...--""        ................       `-.              .");
+    puts("                .-'        ...:'::::;:::%:.::::::_;;:...     `-.");
+    puts("             .-'       ..::::'''''   _...---'"""":::+;_::.      `.      .");
+    puts("  .        .' .    ..::::'      _.-""               :::)::.       `.");
+    puts("         .      ..;:::'     _.-'         .             f::'::    o __");
+    puts("        /     .:::%'  .  .-                         .-.  ::;;:.  /---\\x");
+    puts("  .   .'     ::.::'    .-     _.-------.           (   )  ::.:: |_.-' |");
+    puts("     .'    ::;:'    .'     .-  .d@@b.   \\    .    . `-'   ::%::   \\_ _/    .");
+    puts("    .'    :,::'    /   . _'    8@@@@8   j      .-'       :::::       o");
+    puts("    | .  :.%:' .  j     (_)    `@@@P'  .'   .-          ::.::    .  f");
+    puts("    |    ::::     (        -..____...-'  .-           .::::'       /");
+    puts(".   |    `:`::    `.                ..--'        .  .::'::   .    /");
+    puts("    j     `:::::    `-._____...---""             .::%:::'       .'  .");
+    puts("     \\      ::.:%..             .       .    ...:,::::'       .'");
+    puts(" .    \\       `:::`:..                ....::::.::::'       .-'          .");
+    puts("       \\    .   ``:::%::`::.......:::::%::.::::''       .-'");
+    puts("      . `.        . ``::::::%::::.::;;:::::'''      _.-'          .");
+    puts("  .       `-..     .    .   ````'''''         . _.-'     .          .");
+    puts("         .    ""--...____    .   ______......--' .         .         .");
+    puts("  .        .        .    """"""""     .        .        .        .        .");
+    puts(" .       .       .       .       .       .       .       .       .");
+    puts("     .      .      .      .      .      .      .      .      .      .      .");
+    puts("--------------------------------------------------------------------------------");
+
+    puts("--------------------------------------------------------------------------------");
+    puts("\t  MENU MISIONES");
+    puts("--------------------------------------------------------------------------------");
+    puts("1. Crear una mision ");
+    puts("2. Lanzar una mision (LISTA)");
+    puts("3. Determinar resultado de la mision (EN VUELO)");
+    puts("4. Mostrar misiones");
+    puts("5. Consultar datos de una mision");
+    puts("6. Volver al menu principal");
+}
+
+void opcionMostrarMisiones(char archivoMisiones[],char archivoNaves[])
+{
+    int estado=0;
+    int opsw;
+    char op;
+
+    do {
+
+        puts("--------------------------------------------------------");
+        puts("1. Mostrar todas las misiones en la base de datos");
+        puts("2. Mostrar las misiones disponibles (Estado= 1)");
+        puts("3. Mostrar las misiones en curso    (Estado= 2)");  // (Listo, En vuelo, Retornada, Cancelada, Fallida)
+        puts("4. Mostrar las misiones retornadas  (Estado= 3)");
+        puts("5. Mostrar las misiones canceladas  (Estado= 4)");
+        puts("6. Mostrar las misiones fallidas    (Estado= 5)");
+        puts("--------------------------------------------------------");
+        opsw = preguntarDato();
+        limpiarPantalla();
+        switch(opsw) {
+        case 1:
+
+            mostrarTodasLasMisiones(archivoMisiones,archivoNaves);
+            break;
+        case 2:
+            estado= 1;
+
+            mostrarMisionesXEstado(archivoMisiones,archivoNaves,estado);
+
+            break;
+        case 3:
+            estado= 2;
+            mostrarMisionesXEstado(archivoMisiones,archivoNaves,estado);
+            break;
+        case 4:
+            estado= 3;
+             mostrarMisionesXEstado(archivoMisiones,archivoNaves,estado);
+            break;
+        case 5:
+            estado= 4;
+            mostrarMisionesXEstado(archivoMisiones,archivoNaves,estado);
+            break;
+        case 6:
+            estado= 5;
+            mostrarMisionesXEstado(archivoMisiones,archivoNaves,estado);
+            break;
+        default:
+            printf("Por favor ingrese una opcion valida \n");
+            break;
+        }
+
+        printf("Quiere seguir mostrando misiones? s/n: ");
+        fflush(stdin);
+        op = getch(op);
+        limpiarPantalla();
+
+    } while(op=='s');
+}
+
+void menuMisiones(char archivoMisiones[],char archivoNaves[], char archivoAstro[])
+{
+    char op = 's';
+    int opsw = 0;
+
+
+
+    do{
+
+        dibujoMision();
+
+        puts("Que desea realizar? ");
+        opsw=preguntarDato();
+        limpiarPantalla();
+
+        switch(opsw){
+            case 1:
+
+
+
+                cargarArchivoMisiones(archivoAstro,archivoNaves,archivoMisiones);
+                break;
+            case 2:
+                modificarMisionLista(archivoAstro,archivoMisiones,archivoNaves);
+                break;
+            case 3:
+                modificarMisionEnVuelo(archivoMisiones,archivoNaves,archivoAstro);
+                break;
+            case 4:
+                opcionMostrarMisiones(archivoMisiones,archivoNaves);
+                break;
+            case 5:
+                consultaMision(archivoMisiones);
+                break;
+            case 6:
+                return 0;
+                break;
+            default:
+                limpiarPantalla();
+                printf("Has ingresado mal un dato, vuelve a intentarlo");
+                break;
+        }
+        puts("\nQuiere volver al menu de misiones?: s/n");
+        fflush(stdin);
+        op = getch(op);
+        limpiarPantalla();
+
+    } while(op=='s');
+
+}
+
+void dibujoMarte() {
+
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNWWNWWWWWWWWWWWWWWWWWWWWWWNWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNXK0kddollccccllodxkKXNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNX0xol:,'............ ...':okKNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKkdl::;;;;,,'''''.'.......     .;d0NWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWXOdc::lddlcc:;,,,;,,,,''.......      .:kXWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWXOdlccccoxdllc:;;;;:;;;;,,.........       ,xXWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWN0dlcccclloollc:::;;;;,,'''''.........        ;ONWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWXkollclclloollcc::::;;,,,'''''''.......         .oXWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWXkollllcclolllcccccc:cc:;;;,,,,,,''.......         :KWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWXkoloolccllllllllllllllc:;;;;;;;;,,,'.......         :KWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWNOolooolllollllllllllllc:;,,,,;;;;;,,,''......         lXWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWW0o::llccoollllccllccccc:;;;,,,;;;;,,''''.......        .xNWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWXklc:c:;:lllcclc::c:;;;;;;;;;;;;:::;,,,,''......         :KWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWKdccccc::lllllll:::::;,,,;;;;;;;:cc:;;;,,'......         .kWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWOocloolccclllolc:;;::;,,,,,,,,,;;:c:;;,,'......          .dWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWNOoldddoolllooolclll:;;;;;;,;;,,'',::;,,''......           oNWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWN0ooddooolloollcclooc;;;;;;;;;;,'.',,,,,''......          .dWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWKxddddllooolc:;;:clc:;;;;:;;;,,'....''..........         .kWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWXkddollllodllc;,;::;:::::;;;,,,'''..............         :KWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWW0xoocccclolllc::::;;::;;;;;,'''''''............        .xWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWNOooollcllllc:clccc:;,;;,;;,'.....''','........        cXWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWXxlllooollccllllc:::;;;,;;,'.......','.........      :KWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWKxlllllllllolllc;;;;;;;;;;,,'.....''..........     cKWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWXOdoolccloolccc::::::::cccc:,,'''''''''''....   .oXWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWNKkollccccccccc:ccc:;;:;;;,,,;;;;,,,,''....   ;kNWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWX0dcc::;;;:c::clcc:;,,,,,,,,,;;;,,'....   ,xXWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWXOdc;,,,,;;;:ccc::;;;;,,,,''''....   .:xXWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKkoc;,,;;;;,,'''''''........  ..:d0NWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNXOkdl:;,'...............,:okKNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNKOkxdoolllllllodxOKXWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    puts("NWWNWWWWWWWWWWWWNWWWWWWWWWNWWNWWWWWWNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNWWWWWWWWWWWWNWWWWWWW");
+}
+
+void dibujoSaturno () {
+
+    puts("                                                                    ..;===+.");
+    puts("                                                                .:=iiiiii=+=");
+    puts("                                                             .=i))=;::+)i=+,");
+    puts("                                                          ,=i);)I)))I):=i=;");
+    puts("                                                       .=i==))))ii)))I:i++");
+    puts("                                                     +)+))iiiiiiii))I=i+:'");
+    puts("                                .,:;;++++++;:,.       )iii+:::;iii))+i='");
+    puts("                             .:;++=iiiiiiiiii=++;.    =::,,,:::=i));=+'");
+    puts("                           ,;+==ii)))))))))))ii==+;,      ,,,:=i))+=:");
+    puts("                         ,;+=ii))))))IIIIII))))ii===;.    ,,:=i)=i+");
+    puts("                        ;+=ii)))IIIIITIIIIII))))iiii=+,   ,:=));=,");
+    puts("                      ,+=i))IIIIIITTTTTITIIIIII)))I)i=+,,:+i)=i+");
+    puts("                     ,+i))IIIIIITTTTTTTTTTTTI))IIII))i=::i))i='");
+    puts("                    ,=i))IIIIITLLTTTTTTTTTTIITTTTIII)+;+i)+i`");
+    puts("                   =i))IIITTLTLTTTTTTTTTIITTLLTTTII+:i)ii:'");
+    puts("                   +i))IITTTLLLTTTTTTTTTTTTLLLTTTT+:i)))=,");
+    puts("                   =))ITTTTTTTTTTTLTTTTTTLLLLLLTi:=)IIiii;");
+    puts("                  .i)IIITTTTTTTTLTTTITLLLLLLLT);=)I)))))i;");
+    puts("                  :))IIITTTTTLTTTTTTLLHLLLLL);=)II)IIIIi=:");
+    puts("                  :i)IIITTTTTTTTTLLLHLLHLL)+=)II)ITTTI)i=");
+    puts("                  .i)IIITTTTITTLLLHHLLLL);=)II)ITTTTII)i+");
+    puts("                  =i)IIIIIITTLLLLLLHLL=:i)II)TTTTTTIII)i'");
+    puts("                +i)i)))IITTLLLLLLLLT=:i)II)TTTTLTTIII)i;");
+    puts("              +ii)i:)IITTLLTLLLLT=;+i)I)ITTTTLTTTII))i;");
+    puts("             =;)i=:,=)ITTTTLTTI=:i))I)TTTLLLTTTTTII)i;");
+    puts("           +i)ii::,  +)IIITI+:+i)I))TTTTLLTTTTTII))=,");
+    puts("         :=;)i=:,,    ,i++::i))I)ITTTTTTTTTTIIII)=+'");
+    puts("       .+ii)i=::,,   ,,::=i)))iIITTTTTTTTIIIII)=+");
+    puts("      ,==)ii=;:,,,,:::=ii)i)iIIIITIIITIIII))i+:'");
+    puts("     +=:))i==;:::;=iii)+)=  `:i)))IIIII)ii+'");
+    puts("   .+=:))iiiiiiii)))+ii;");
+    puts("  .+=;))iiiiii)));ii+");
+    puts(" .+=i:)))))))=+ii+");
+    puts(".;==i+::::=)i=;");
+    puts(",+==iiiiii+,");
+    puts("`+=+++;`");
+}
+
+void dibujoLuna () {
+
+    puts("                     .--------------.");
+    puts("                .---'  o        .    `---.");
+    puts("             .-'    .    O  .         .   `-.");
+    puts("          .-'     @@@@@@       .             `-.");
+    puts("        .'@@   @@@@@@@@@@@       @@@@@@@   .    `.");
+    puts("      .'@@@  @@@@@@@@@@@@@@     @@@@@@@@@         `.");
+    puts("     /@@@  o @@@@@@@@@@@@@@     @@@@@@@@@     O     \\ ");
+    puts("    /        @@@@@@@@@@@@@@  @   @@@@@@@@@ @@     .  \\ ");
+    puts("   /@  o      @@@@@@@@@@@   .  @@  @@@@@@@@@@@     @@ \\ ");
+    puts("  /@@@      .   @@@@@@ o       @  @@@@@@@@@@@@@ o @@@@ \\ ");
+    puts(" /@@@@@                  @ .      @@@@@@@@@@@@@@  @@@@@ \\ ");
+    puts(" |@@@@@    O    `.-./  .        .  @@@@@@@@@@@@@   @@@  | ");
+    puts(" / @@@@@        --`-'       o        @@@@@@@@@@@ @@@    .  ");
+    puts(" |@ @@@@ .  @  @    `    @            @@      . @@@@@@   | ");
+    puts(" |   @@                         o    @@   .     @@@@@@   | ");
+    puts(" |  .     @   @ @       o              @@   o   @@@@@@.  | ");
+    puts(" \\     @    @       @       .-.       @@@@       @@@    / ");
+    puts(" |  @    @  @              `-'     . @@@@     .    .    |" );
+    puts(" \\ .  o       @  @@@@  .              @@  .           . /");
+    puts("  \\      @@@    @@@@@@       .                   o     /");
+    puts("   \\    @@@@@   @@\\@@    /        O          .        /");
+    puts("    \\ o  @@@       \\ \\  /  __        .   .     .--.  /");
+    puts("     \\      .     . \\.-.---                   `--'  /");
+    puts("      `.             `-'      .                   .'");
+    puts("        `.    o     / | `           O     .     .'");
+    puts("          `-.      /  |        o             .-'");
+    puts("             `-.          .         .     .-'");
+    puts("                `---.        .       .---'");
+    puts("                     `--------------'");
+}
+
+void dibujoTierra () {
+
+    puts("              _-o#&&*''''?d:>b\\_               ");
+    puts("          _o/'`''  '',, dMF9MMMMMHo_            ");
+    puts("       .o&#'        `'MbHMMMMMMMMMMMHo.         ");
+    puts("     .o"" '         vodM*$&&HMMMMMMMMMM?.       ");
+    puts("    ,'              $M&ood,~'`(&##MMMMMMH\\     ");
+    puts("   /               ,MMMMMMM#b?#MMMMMMMHMMML     ");
+    puts("  &              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk    ");
+    puts(" ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L   ");
+    puts("|               |MMMMMMMMMMMMMMMMMMMMbMH'   T,  ");
+    puts("$H#:            `*MMMMMMMMMMMMMMMMMMMMb#}'  `?  ");
+    puts("]MMH#             ""*""""*#MMMMMMMMMMMMM'    -  ");
+    puts("MMMMMb_                   |MMMMMMMMMMMP'     :  ");
+    puts("HMMMMMMMHo                 `MMMMMMMMMT       .  ");
+    puts("?MMMMMMMMP                  9MMMMMMMM}       -  ");
+    puts("-?MMMMMMM                  |MMMMMMMMM?,d-    '  ");
+    puts(" :|MMMMMM-                 `MMMMMMMT .M|.   :   ");
+    puts("  .9MMM[                    &MMMMM*' `'    .    ");
+    puts("   :9MMk                    `MMM#'        -     ");
+    puts("     &M}                     `          .-      ");
+    puts("      `&.                             ./        ");
+    puts("        `~,                        ../          ");
+    puts("           '. _                 /-'             ");
+    puts("              '`--._,dd###pp=""''               ");
+    puts("                                                ");
+    puts("");
+}
+
+void dibujoEEI () {
+
+    puts("                /\\");
+    puts("                ||");
+    puts("               ====");
+    puts("               |  |");
+    puts("               |  |");
+    puts("               ====");
+    puts("               XXXX");
+    puts("               |\\/|");
+    puts("               |/\\|");
+    puts("               |\\/|");
+    puts("               |/\\|");
+    puts("               |\\/|");
+    puts("               |/\\|");
+    puts("              /____\\");
+    puts("              |    |");
+    puts("              |    |");
+    puts("             /      \\");
+    puts("            /        \\");
+    puts("           /          \\");
+    puts("          /            \\");
+    puts("         /              \\");
+    puts("         ----------------");
+    puts("         |--------------|");
+    puts("         |              |");
+    puts("         |     ______   |");
+    puts("         |     |        |");
+    puts("         |     |---     |");
+    puts("         |     |_____   |");
+    puts("         |     ______   |");
+    puts("         |     |        |");
+    puts("         |     |---     |");
+    puts("         |     |_____   |");
+    puts("         |              | ");
+    puts("         |     -----    |");
+    puts("         |       |      |");
+    puts("         |       |      |");
+    puts("         |       |      |");
+    puts("         |     -----    |");
+    puts("         |              |");
+    puts("         |      __      |");
+    puts("        /|      ||      |\\");
+    puts("       / |      ||      | \\");
+    puts("      /  |      ||      |  \\");
+    puts("     /   |      ||      |   \\");
+    puts("-----    |      HH      |    -----");
+    puts("|   |    |      HH      |    |   |");
+    puts("|   |    |      HH      |    |   |");
+    puts("|   |    |      HH      |    |   |");
+    puts("|   |    |______HH______|    |   |");
+    puts("--------/       HH       \\--------");
+}
+
+void despedida()
+{
+    puts(" _    _           __ _             _ _              _              _                                                               ");
+    puts("| |  | |         / _(_)           | (_)            | |            | |                                                              ");
+    puts("| |__| | __ _   | |_ _ _ __   __ _| |_ ______ _  __| | ___     ___| |  _ __  _ __ ___   __ _ _ __ __ _ _ __ ___   __ _             ");
+    puts("|  __  |/ _` |  |  _| | '_ \\ / _` | | |_  / _` |/ _` |/ _ \\   / _ \\ | | '_ \\| '__/ _ \\ / _` | '__/ _` | '_ ` _ \\ / _` |            ");
+    puts("| |  | | (_| |  | | | | | | | (_| | | |/ / (_| | (_| | (_) | |  __/ | | |_) | | | (_) | (_| | | | (_| | | | | | | (_| |  _   _   _ ");
+    puts("|_|  |_|\\__,_|  |_| |_|_| |_|\\__,_|_|_/___\\__,_|\\__,_|\\___/   \\___|_| | .__/|_|  \\___/ \\__, |_|  \\__,_|_| |_| |_|\\__,_| (_) (_) (_)");
+    puts("                                                                      | |               __/ |                                      ");
+    puts("                                                                      |_|              |___/                                       ");
+
+
+    puts("                       |        |                                             ");
+    puts("                       |        |  //                 \\\\ | |                ");
+    puts("                       \\        | //                 /_\\\\| |         _.-~  ");
+    puts("                        \\       |||                 |  ||/ |     _.-~        ");
+    puts("                 ________\\      |||                  \\ ||  |__.-~           ");
+    puts("                /       /~`. ___\\||___________________/||_/______________     ");
+    puts("              _/_______/__/]---.               _____               ;:         ");
+    puts("             /         /( )/\\   `._____________\\    \\               :         ");
+    puts("            /         / /\\ \\    / .=============\\    \\             ::         ");
+    puts("           /         / / / /\\   | :            | \\(_)_\\            ::         ");
+    puts("          /         / / / /-\\\\ _\\'             | |\\  \\             ::         ");
+    puts("         /        /' / / /._/.'_'.             | |/\\  \\            ::         ");
+    puts("        /        /  / / / - / _-  \\____________|_/ /\\  \\           ::         ");
+    puts("       /        /'  / / /-   |      \\====/\\======= /  \\_ \\          ::        ");
+    puts("      /        /   / : (  - -\\      \\_(/ /\\    / /    \\ \\           ::        ");
+    puts("     /...----'   /  . `. -   \\ -_   _'.\\\\ /|  / /|     \\ \\          ::        ");
+    puts("     \\           \\  /`. `._  /\\   _-    \\\\/  / / |      \\ \\         ::        ");
+    puts("      \\___________\\/  `. `._..'\\_______.'___/ /| |       \\ \\_       :         ");
+    puts("               /'.      `.....' |==========/ / \\ \\        \\_ \\      ::        ");
+    puts("              /-_   :  --..___ \\/       / / /   \\ \\         \\ \\_    ::        ");
+    puts("              |-._   :          \\      / / /     \\ \\         \\_ \\   ::        ");
+    puts("              |-_ '-._\\ - -_   - \\____/_/ /-      \\ \\     __   \\ \\   ::       ");
+    puts("        __..--|-      /\\          \\====/ /  \\      \\ \\_.-~  \\   \\ \\  ::       ");
+    puts("__..--~~.   . |     _.| \\          \\  / /  -     _. \\ \\      \\   \\ \\ ::       ");
+    puts("'  .  '   .   |__.-'  |   \\__       \\/ /     _.-    \\_/      /    \\ \\ ::      ");
+    puts(" __--~~  . .  |       |____\\ '----___\\/   _.-             _.-      \\ \\::      ");
+    puts("  __--''      |       /====-\\        |    \\            _.-          \\ \\:      ");
+    puts(" ..--~~ .- .. |  .    |     |        / _.- \\        _.-              \\_\\      ");
+    puts("   .   .      |_-     /     |_--  --/.-     \\    _.-________________________  ");
+    puts(" . . .   .  . |      /______|______/      _.-\\_.-        ..    . '  .  /      ");
+    puts("    .   .     |______|=====/' -_- '/   _.-      .    .            .   /       ");
+    puts(" .       .    |'     '|   /--__   /_.-   .        .       .         ./        ");
+    puts(". .  .       /|___----|  /    -_ (____    .     .    .            . /         ");
+    puts("            / |   -   |_ |___________ \\  .    .           .    .   /          ");
+    puts(" . .   .'  / /|_-  -  \\ \\ \\___________/   .      .    .         . <           ");
+    puts("          /___\\ ______- /__/ /           .     .             .   . '-._       ");
+    puts(" '. .  . /=====\\_______/==/ / ..     .      .      .      .       .    '~~-.__");
+    puts("   .  . /_/ /          _//_/      .           .       .            .          ");
+    puts(" . .  .    /           /         .       .       .          ' .      .        ");
+    puts("          /           /     .       .    '    ,.        .       .           ' ");
+    puts(" . .     /           /   .        .         .       .       .         '   .   ");
+    puts("  .   . / ___       / .         .        ..      '      .         . ..       .");
+    puts("     __/_/  \\\\     /___    .      . .         .     .       '             .   ");
+    puts("  .'  //     \\\\   /    `.                                                     ");
+    puts(".'   /_|.'..'.\\\\ /       `.   .         .       '         .       .       .   ");
+    puts("      _|_______\\\\_         \\       . .    .        .            .     '  .    ");
+    puts("     \\___     ___/        // .          .     .        .               .      ");
+    puts("         '---'          .'/       .               .         .              .  ");
+    puts("`.                    .'.'   .        .               .            .    .     ");
+    puts("`.`.________________.'.'  .       .        .              .          .        ");
+    puts("  `.________________.'UTN                                                     ");
+    puts(".     .          .          .         .        .          .      .            ");
 
 }

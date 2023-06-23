@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "astronauta.h"
-#include "naves.h"
+#include "nave.h"
 #include "menu.h"
 #include "misiones.h"
-#define DIM_MAX_ARCHI 15
-#define DIM_MAX_STR 20
+#define DIM_MAX_ARCHI 30
+#define DIM_MAX_STR 40
+#define DIM_MAX_TXT 256
+
+
 
 // validar
 
@@ -14,10 +17,10 @@ void validarTipoNave(char tipoNave[])
 {
 
     int flag = 0, dato=0;
-    tiposDeNave();
-    dato=preguntarDato();
     do
     {
+    tiposDeNave();
+    dato=preguntarDato();
         switch(dato)
         {
         case 1:
@@ -34,11 +37,11 @@ void validarTipoNave(char tipoNave[])
             break;
         default:
             printf("ERROR,ingrese una nave valida...\n");
+            flag = 0;
             break;
         }
 
-    }
-    while(flag == 0);
+    } while(flag == 0);
 
 }
 int validarCantNave(int cont)
@@ -107,12 +110,11 @@ int validarSiNaveEstaOcupada(int estado)
 
 stNaves cargarUnaNave(char archivoNaves[])
 {
-    int dato = 0;
     stNaves aux;
 
 ///Datos default
-    int ultimaID = encontrarUltimaIDNave(archivoNaves);
-    aux.idNave =ultimaID + 1;
+    int ultimaID =encontrarUltimaIDNave(archivoNaves);
+    aux.idNave = ultimaID + 1;
     aux.CantidadDeVuelosRealizados = 0;
     aux.HorasDeVueloAcumuladas = 0;
     aux.estado = 1;
@@ -163,14 +165,14 @@ int contarNaveXtipo(char archivoNaves[], char tipoNave[])
     FILE * buffer= fopen(archivoNaves, "rb");
     if(buffer != NULL)
     {
-       while(fread(&aux,sizeof(stNaves),1,buffer) > 0)
-       {
-           if(strcmpi(aux.tipoDeNave,tipoNave) == 0)
-           {
-               cont++;
-           }
-       }
-     fclose(buffer);
+        while(fread(&aux,sizeof(stNaves),1,buffer) > 0)
+        {
+            if(strcmpi(aux.tipoDeNave,tipoNave) == 0)
+            {
+                cont++;
+            }
+        }
+        fclose(buffer);
     }
     else
     {
@@ -182,7 +184,7 @@ int contarNaveXtipo(char archivoNaves[], char tipoNave[])
 
 void cargarArchivoNaves(char archivoNaves[])
 {
-    char op='s';
+
     int cont=0;
     stNaves aux;
 
@@ -190,16 +192,16 @@ void cargarArchivoNaves(char archivoNaves[])
 
     if(buffer != NULL)
     {
-            aux = cargarUnaNave(archivoNaves);
-            cont = contarNaveXtipo(archivoNaves,aux.tipoDeNave);
+        aux = cargarUnaNave(archivoNaves);
+        cont = contarNaveXtipo(archivoNaves,aux.tipoDeNave);
 
-            if(validarCantNave(cont)==1)
-            {
-                fwrite(&aux,sizeof(stNaves),1,buffer);
-            }
+        if(validarCantNave(cont)==1)
+        {
+            fwrite(&aux,sizeof(stNaves),1,buffer);
+        }
 
         fclose(buffer);
-        }
+    }
 
     else
     {
@@ -244,7 +246,7 @@ void mostrarUnaNave(stNaves aux)
 void mostrarTodasLasNaves(char archivoNaves[])
 {
     stNaves aux;
-    FILE * buffer=fopen(archivoNaves,"rb");
+    FILE* buffer=fopen(archivoNaves,"rb");
 
     if(buffer != NULL)
     {
@@ -277,7 +279,7 @@ int encontrarPosicionNaveXID(char archivoNaves[], int IDNave)
         {
             if (aux.idNave == IDNave)
             {
-                posNave = ftell(buffer)/sizeof(stNaves) -1;
+                posNave = ftell(buffer)/sizeof(stNaves);
                 flag = 1;
             }
         }
@@ -307,11 +309,12 @@ void cargarNaveModificada(char archivoNaves[])
             datoID = preguntarDato();
             limpiarPantalla();
 
-        }while(validarIDNave(archivoNaves,datoID)== 0 || validarSiNaveEstaOcupada(aux.estado) == 0);
+        }
+        while(validarIDNave(archivoNaves,datoID)== 0 || validarSiNaveEstaOcupada(aux.estado) == 0);
 
 
 
-        posNave=encontrarPosicionNaveXID(archivoNaves,datoID);
+        posNave=encontrarPosicionNaveXID(archivoNaves,datoID)-1;
 
         fseek(buffer,sizeof(stNaves)*posNave,SEEK_SET);
         fread(&aux,sizeof(stNaves),1,buffer);
@@ -337,12 +340,12 @@ void modificarUnaNave(stNaves* aux)
     do
     {
 
-        puts("------------------NAVE ELEGIDA------------------");
+        puts("\n------------------NAVE ELEGIDA------------------");
         mostrarUnaNave(*aux);
 
         puts("1. Estado (Alta/Baja)");
         puts("2. Volver al menu de naves");
-        printf("Que desea modificar?: ");
+        puts("Que desea modificar?: ");
         scanf("%i",&opsw);
 
         switch(opsw)
@@ -350,10 +353,12 @@ void modificarUnaNave(stNaves* aux)
         case 1:
             do
             {
-                puts("1 ALTA ; 3 DE BAJA");
+                puts("Ingrese 1 para dar de Alta/Reparar");
+                puts("Ingrese 3 para dar de Baja");
                 dato=preguntarDato();
                 aux->estado= dato;
-            }while(validarEstadoNave(dato)== 0);
+            }
+            while(validarEstadoNave(dato)== 0);
             break;
         case 2:
             break;
@@ -364,7 +369,7 @@ void modificarUnaNave(stNaves* aux)
         puts("--------------------NAVE MODIFICADA----------------------");
         mostrarUnaNave(*aux);
 
-        printf("\nDesea seguir modificando la nave? s/n");
+        puts("(S/N)Desea seguir modificando la nave?");
         fflush(stdin);
         op = getch(op);
 
@@ -724,7 +729,25 @@ int contarRegistrosNave(char archivoNaves[])
     return cant;
 }
 
+int contarXestadoNave(char archivoNave[],int estado){
 
+int contador = 0;
+stNaves aux;
+FILE* bufferNave;
+bufferNave = fopen(archivoNave,"rb");
+if(bufferNave != NULL){
+    while(fread(&aux,sizeof(stNaves),1,bufferNave)>0){
+        if(aux.estado == estado){
+            contador++;
+        }
+
+    }
+    fclose(bufferNave);
+}else{
+puts("ERROR en el archivo");
+}
+return contador;
+}
 
 
 

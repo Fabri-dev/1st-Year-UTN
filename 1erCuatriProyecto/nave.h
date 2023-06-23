@@ -1,10 +1,11 @@
 #ifndef NAVES_H_INCLUDED
 #define NAVES_H_INCLUDED
-#define DIM_MAX_ARCHI 15
-#define DIM_MAX_STR 20
+#define DIM_MAX_ARCHI 30
+#define DIM_MAX_STR 40
+#define DIM_MAX_TXT 256
 
 typedef struct{
-int id;
+int idNave;
 char tipoDeNave[DIM_MAX_STR]; //(Starship, Falcon 9, Falcon Heavy) sólo pueden ser esas tres naves, ningún otro tipo se acepta.
 int CantidadDeVuelosRealizados;
 int HorasDeVueloAcumuladas;
@@ -27,6 +28,7 @@ stNaves cargarUnaNave(char archivoNaves[]);
 int encontrarUltimaIDNave(char archivoNaves[]);
 void tiposDeNave();
 
+
 // archivos
 void cargarArchivoNaves(char archivoNaves[]);
 int contarRegistrosNaveParaElArregloDinamico(char archivoNaves[]);      ///esta funcion me devuelve el tamaño exacto para el arreglo dinamico
@@ -35,10 +37,10 @@ int contarRegistrosNaveParaElArregloDinamico(char archivoNaves[]);      ///esta 
 // mostrar
 void mostrarUnaNave(stNaves aux);
 void mostrarTodasLasNaves(char archivoNaves[]);
-
+int menuTipoNaves(stNaves arregloNave[], int validos);
 
 // modificar
-int validarIDNave(char archivoNave[], int dato);
+
 int encontrarPosicionNaveXID(char archivoNaves[], int IDNave);
 void cargarNaveModificada(char archivoNaves[]);
 void modificarUnaNave(stNaves * aux);
@@ -66,7 +68,7 @@ int navesConMenorHoraDeVuelo(stNaves arregloNave[],int validos);        ///devue
 int naveConMayorVuelosRealizados(stNaves arregloNave[],int validos);    ///devuelve la posicion donde se encuentra la nave con mayor cantidad de vuelos realizados
 int naveConMenorVuelosRealizados(stNaves arregloNave[],int validos);    ///devuelve la posicion donde se encuentra la nave con menor cantidad de vuelos realizados
 int mostrarNavesXEstado(char archivoNaves[], int estado);               ///Cambie la ubi de esta funcion ya que no se utilizaba antes y me sirve para la consulta
-
+int contarXestadoNave(char archivoNave[],int estado);
 #endif // NAVES_H_INCLUDED
 
 
