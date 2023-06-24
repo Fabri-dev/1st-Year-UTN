@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1686831283 source:d:\fabrizio golisciano lab2\fabrizio golisciano\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686835531 d:\fabrizio golisciano lab2\fabrizio golisciano\funciones.h
+
+1686835695 source:d:\fabrizio golisciano lab2\fabrizio golisciano\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686835696 source:c:\users\fabri\desktop\fabrizio golisciano\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1686835532 c:\users\fabri\desktop\fabrizio golisciano\funciones.h
+
+1686831284 source:c:\users\fabri\desktop\fabrizio golisciano\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+

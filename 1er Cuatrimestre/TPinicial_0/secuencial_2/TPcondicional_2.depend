@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1678922647 source:d:\programs\codeblocks\proyectos\tp2_condicionales\tpcondicional_2\main.c
+	<stdio.h>
+	<stdlib.h>
+

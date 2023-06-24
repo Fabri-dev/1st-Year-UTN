@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1490112217 source:d:\facu\c\repasos y practicas\repaso1er_parcial\pila.c
+	"pila.h"
+
+1490112217 d:\facu\c\repasos y practicas\repaso1er_parcial\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1683165041 source:d:\facu\c\repasos y practicas\repaso1er_parcial\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+

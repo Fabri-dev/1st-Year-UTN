@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1686782949 source:g:\facu\c\repasos y practicas\simulacroparcial2\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+	<string.h>
+
+1686781389 g:\facu\c\repasos y practicas\simulacroparcial2\funciones.h
+
+1686780229 source:g:\facu\c\repasos y practicas\simulacroparcial2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+	<string.h>
+

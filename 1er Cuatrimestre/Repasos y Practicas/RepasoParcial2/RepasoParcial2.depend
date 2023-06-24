@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1686171939 source:g:\facu\c\repasos y practicas\repasoparcial2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

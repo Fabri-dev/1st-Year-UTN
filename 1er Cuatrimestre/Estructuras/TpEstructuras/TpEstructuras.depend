@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1685203131 source:g:\facu\c\estructuras\tpestructuras\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

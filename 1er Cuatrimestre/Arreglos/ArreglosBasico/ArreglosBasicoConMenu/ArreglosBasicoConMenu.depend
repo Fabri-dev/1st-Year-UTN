@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1490112217 source:g:\facu\c\arreglos\arreglosbasico\arreglosbasicoconmenu\pila.c
+	"pila.h"
+
+1490112217 g:\facu\c\arreglos\arreglosbasico\arreglosbasicoconmenu\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1685980224 source:g:\facu\c\arreglos\arreglosbasico\arreglosbasicoconmenu\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+

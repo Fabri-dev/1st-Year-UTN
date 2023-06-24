@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1685747371 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"pila.h"
+	"prototipados.h"
+
+1490112217 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\pila.c
+	"pila.h"
+
+1490112217 g:\facu\c\archivos\archivosestructuras\archivosalumnos\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1685751839 source:g:\facu\c\archivos\archivosestructuras\archivosalumnos\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"pila.h"
+	"prototipados.h"
+
+1685747291 g:\facu\c\archivos\archivosestructuras\archivosalumnos\prototipados.h
+	<stdio.h>
+	<malloc.h>
+
