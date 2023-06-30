@@ -3,6 +3,7 @@
 
 int main()
 {
+    srand(time(NULL));
     char abecedario[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
     char letra,letra_random;
     int i, num_random, intentos, cont;
@@ -16,7 +17,8 @@ int main()
 
 
     while (cont < intentos) {
-        printf("Adivine la letra: \n(Por favor ingrese una letra en minuscula)");
+        printf("Adivine la letra: \n(Por favor ingrese una letra en minuscula):");
+        fflush(stdin);
         scanf("%c", &letra);
 
 

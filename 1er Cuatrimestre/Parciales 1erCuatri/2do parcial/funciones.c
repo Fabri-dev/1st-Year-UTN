@@ -93,7 +93,7 @@ stDireccion crearUnaDireccion(int * IDdirec)
     aux.idDireccion=*IDdirec;
     *IDdirec+=1;
 
-   // printf("Ingrese el ID de la direccion: ");
+    // printf("Ingrese el ID de la direccion: ");
     //scanf("%i",&aux.idDireccion);
     printf("Ingrese el nombre: ");
     fflush(stdin);
@@ -326,17 +326,14 @@ void catalogarTipoMetraje(stPelicula * aux)
     int cortoMetraje=45;
 
 
-        if(aux->minutosDuracion < cortoMetraje )
-        {
-            aux->tipoMetraje=0;
-        }
-        else if (aux->minutosDuracion > cortoMetraje)
-        {
-            aux->tipoMetraje=1;
-        }
-
-
-
+    if(aux->minutosDuracion < cortoMetraje )
+    {
+        aux->tipoMetraje=0;
+    }
+    else if (aux->minutosDuracion > cortoMetraje)
+    {
+        aux->tipoMetraje=1;
+    }
 
 
 }
@@ -346,13 +343,15 @@ void clasificarPeliculas(char archivoPel[])
 {
     FILE* archi= fopen(archivoPel,"r+b");
     stPelicula aux;
-
+    int cortoMetraje=45;
     if(archi != NULL)
     {
         while(fread(&aux,sizeof(stPelicula),1,archi) > 0)
         {
-            fseek(archi,sizeof(stPelicula)*(-1),SEEK_CUR);
+
             catalogarTipoMetraje(&aux);
+
+            fseek(archi,sizeof(stPelicula)*-1,SEEK_CUR);
 
             fwrite(&aux,sizeof(stPelicula),1,archi);
 
